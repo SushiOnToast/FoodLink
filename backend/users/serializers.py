@@ -11,7 +11,9 @@ class RegisterSerialiser(serializers.ModelSerializer):
             "password",
             "email",
             "first_name",
-            "last_name",
+            "role",
+            "latitude",
+            "longitude",
         ]
         extra_kwargs = {
             "password": {
@@ -40,7 +42,10 @@ class UserSerialiser(serializers.ModelSerializer):
             "username",
             "email",
             "first_name",
-            "last_name",
+            "role",
+            "about",
+            "latitude",
+            "longitude",      
         ]
 
 
@@ -49,7 +54,9 @@ class UpdateProfileSerialiser(serializers.ModelSerializer):
         model = User
         fields = [
             "first_name",
-            "last_name",
             "username",
             "email",
+            "about",
+            "latitude",
+            "longitude",
         ]

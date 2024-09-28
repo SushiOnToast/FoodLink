@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
-import { ACCESS_TOKEN, REFRESH_TOKEN, USERNAME } from "../constants";
+import { ACCESS_TOKEN, REFRESH_TOKEN, USER_ROLE, USERNAME } from "../constants";
 import LoadingIndicator from "./LoadingIndicator";
+import MapSelector from "./MapSelector";
 import { jwtDecode } from "jwt-decode";
 
 function Form({ route, method }) {
   const [username, setUsername] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [isRecipient, setIsRecipient] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+
   const navigate = useNavigate();
 
   const type = method === "login" ? "Login" : "Register";
@@ -35,10 +39,14 @@ function Form({ route, method }) {
             username,
             password,
             email,
-            first_name: firstName,
-            last_name: lastName,
+            first_name: name,
+            role: isRecipient ? "recipient" : "donor",
+            latitude,
+            longitude,
           }
         : { username, password };
+
+    console.log(data);
 
     try {
       const res = await api.post(route, data);
@@ -47,8 +55,12 @@ function Form({ route, method }) {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
 
-        const decodedToken = jwtDecode(localStorage.getItem(ACCESS_TOKEN));
+        const token = localStorage.getItem(ACCESS_TOKEN);
+        const decodedToken = jwtDecode(token);
+        const userRole = decodedToken.role;
+
         localStorage.setItem(USERNAME, username);
+        localStorage.setItem(USER_ROLE, userRole);
 
         navigate("/");
       } else {
@@ -77,20 +89,34 @@ function Form({ route, method }) {
       <form onSubmit={handleSubmit} className="form-container">
         {type === "Register" && (
           <>
+            <div id="role-selector">
+              <label>
+                <input
+                  className="role"
+                  type="radio"
+                  checked={isRecipient}
+                  onChange={() => setIsRecipient(true)}
+                />
+                Recipient
+              </label>
+              <label>
+                <input
+                  className="role"
+                  type="radio"
+                  checked={!isRecipient}
+                  onChange={() => setIsRecipient(false)}
+                />
+                Donor
+              </label>
+            </div>
+            <br />
             <input
               className="form-input"
               type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="First name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Name"
               required
-            />
-            <input
-              className="form-input"
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Last name"
             />
           </>
         )}
@@ -105,14 +131,25 @@ function Form({ route, method }) {
         />
         <br />
         {type === "Register" && (
-          <input
-            className="form-input"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-          />
+          <>
+            <input
+              className="form-input"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+            />
+            <br />
+            <br />
+            <h2>select location</h2>
+            <MapSelector
+              setLatitude={setLatitude}
+              setLongitude={setLongitude}
+            />
+            <br />
+            <br />
+          </>
         )}
         <br />
         <input
@@ -144,4 +181,5 @@ function Form({ route, method }) {
     </div>
   );
 }
+
 export default Form;

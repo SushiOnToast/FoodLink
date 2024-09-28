@@ -10,10 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-geocoder": "^5.0.3",
+    "@mapbox/mapbox-gl-supported": "^3.0.0",
+    "@react-google-maps/api": "^2.19.3",
     "axios": "^1.7.7",
     "jwt-decode": "^4.0.0",
+    "leaflet": "^1.9.4",
+    "mapbox-gl": "^3.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-leaflet": "^4.2.1",
+    "react-places-autocomplete": "^7.3.0",
     "react-router-dom": "^6.26.2",
     "styled-components": "^6.1.13"
   },

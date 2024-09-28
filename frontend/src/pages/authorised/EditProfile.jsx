@@ -10,9 +10,9 @@ function EditProfile() {
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     first_name: "",
-    last_name: "",
     email: "",
     username: "",
+    about: "",
   });
 
   useEffect(() => {
@@ -22,9 +22,9 @@ function EditProfile() {
         const response = await api.get(`/api/users/profile/${username}`);
         setFormData({
           first_name: response.data.first_name,
-          last_name: response.data.last_name,
           email: response.data.email,
           username: response.data.username,
+          about: response.data.about,
         });
         setLoading(false);
       } catch (err) {
@@ -71,14 +71,7 @@ function EditProfile() {
           name="first_name"
           value={formData.first_name}
           onChange={handleChange}
-          placeholder="First Name"
-        />
-        <input
-          type="text"
-          name="last_name"
-          value={formData.last_name}
-          onChange={handleChange}
-          placeholder="Last Name"
+          placeholder="Name"
         />
         <input
           type="email"
@@ -95,6 +88,15 @@ function EditProfile() {
           placeholder="Username"
           disabled
         />
+        <br />
+        <textarea
+          type="textarea"
+          name="about"
+          value={formData.about}
+          onChange={handleChange}
+          placeholder="About me"
+        />
+        <br />
         <button type="submit" disabled={loading}>
           Save Changes
         </button>

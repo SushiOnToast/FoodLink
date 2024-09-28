@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { USERNAME } from "../../constants";
 import api from "../../api";
 import LoadingIndicator from "../../components/LoadingIndicator";
+import MapView from "../../components/MapView";
 
 function ProfileView() {
   const { username } = useParams();
@@ -17,6 +18,7 @@ function ProfileView() {
       try {
         const response = await api.get(`/api/users/profile/${username}/`);
         setUser(response.data);
+        console.log(response.data);
       } catch (error) {
         alert("Failed to fetch user data.");
       } finally {
@@ -32,10 +34,11 @@ function ProfileView() {
   return (
     <div className="profile-page">
       <div className="profile-details">
-        <h1 className="name">
-          {user.first_name} {user.last_name}
-        </h1>
+        <h1 className="name">{user.first_name}</h1>
         <p className="username">@{username}</p>
+        <p className="role">{user.role}</p>
+        <p className="about">{user.about}</p>
+        <MapView latitude={user.latitude} longitude={user.longitude} />
         {viewerUsername === username && (
           <button
             className="edit-profile"

@@ -6,7 +6,7 @@ class CustomTokenObtainPairSerialiser(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
         # add custom claims
-        # token["role"] = user.role
+        token["role"] = user.role
         return token
 
 class CustomTokenObtainPairView(TokenObtainPairView):
