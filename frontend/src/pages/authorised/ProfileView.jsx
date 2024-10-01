@@ -18,7 +18,6 @@ function ProfileView() {
       try {
         const response = await api.get(`/api/users/profile/${username}/`);
         setUser(response.data);
-        console.log(response.data);
       } catch (error) {
         alert("Failed to fetch user data.");
       } finally {

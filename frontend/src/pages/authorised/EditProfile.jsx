@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import { USERNAME } from "../../constants";
+import MapSelector from "../../components/MapSelector";
 
 function EditProfile() {
   const username = localStorage.getItem(USERNAME);
@@ -13,10 +14,11 @@ function EditProfile() {
     email: "",
     username: "",
     about: "",
+    latitude: null, 
+    longitude: null, 
   });
 
   useEffect(() => {
-    // pre filling form
     const fetchProfile = async () => {
       try {
         const response = await api.get(`/api/users/profile/${username}`);
@@ -25,6 +27,8 @@ function EditProfile() {
           email: response.data.email,
           username: response.data.username,
           about: response.data.about,
+          latitude: response.data.latitude, 
+          longitude: response.data.longitude,
         });
         setLoading(false);
       } catch (err) {
@@ -49,8 +53,12 @@ function EditProfile() {
     setLoading(true);
 
     try {
-      await api.put(`/api/users/profile/${username}/edit/`, formData);
-      alert("profile updated successfully!");
+      await api.put(`/api/users/profile/${username}/edit/`, {
+        ...formData,
+        latitude: formData.latitude, 
+        longitude: formData.longitude, 
+      });
+      alert("Profile updated successfully!");
       navigate(`/profile/${username}/`);
     } catch (err) {
       console.error("Error changing profile:", err);
@@ -95,6 +103,14 @@ function EditProfile() {
           value={formData.about}
           onChange={handleChange}
           placeholder="About me"
+        />
+        <br />
+        <h2>Select Location</h2>
+        <MapSelector
+          setLatitude={(lat) => setFormData({ ...formData, latitude: lat })}
+          setLongitude={(lng) => setFormData({ ...formData, longitude: lng })}
+          initialLatitude={formData.latitude} // Pass existing latitude
+          initialLongitude={formData.longitude} // Pass existing longitude
         />
         <br />
         <button type="submit" disabled={loading}>

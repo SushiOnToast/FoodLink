@@ -13,6 +13,7 @@ import LandingPage from "./pages/LandingPage";
 import Home from "./pages/authorised/Home";
 import ProfileView from "./pages/authorised/ProfileView";
 import EditProfile from "./pages/authorised/EditProfile";
+import Listings from "./pages/authorised/Listings";
 
 function Logout() {
   localStorage.clear();
@@ -45,6 +46,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ProfileView />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/listings"
+            element={
+              <ProtectedRoute>
+                <Listings />
               </ProtectedRoute>
             }
           />

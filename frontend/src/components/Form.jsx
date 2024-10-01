@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN, USER_ROLE, USERNAME } from "../constants";
 import LoadingIndicator from "./LoadingIndicator";
 import MapSelector from "./MapSelector";
 import { jwtDecode } from "jwt-decode";
+
+const DEFAULT_LATITUDE = 17.385044; // Fallback latitude (Hyderabad)
+const DEFAULT_LONGITUDE = 78.486671; // Fallback longitude (Hyderabad)
 
 function Form({ route, method }) {
   const [username, setUsername] = useState("");
@@ -14,10 +17,35 @@ function Form({ route, method }) {
   const [email, setEmail] = useState("");
   const [isRecipient, setIsRecipient] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+  const [latitude, setLatitude] = useState(DEFAULT_LATITUDE);
+  const [longitude, setLongitude] = useState(DEFAULT_LONGITUDE);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude: userLat, longitude: userLng } = position.coords;
+            setLatitude(userLat);
+            setLongitude(userLng);
+          },
+          () => {
+            // If the user denies permission, fall back to default coordinates
+            setLatitude(DEFAULT_LATITUDE);
+            setLongitude(DEFAULT_LONGITUDE);
+          }
+        );
+      } else {
+        // Fallback if geolocation is not supported
+        setLatitude(DEFAULT_LATITUDE);
+        setLongitude(DEFAULT_LONGITUDE);
+      }
+    };
+
+    fetchLocation(); // Call the fetchLocation function
+  }, []); // Empty dependency array to run once on mount
 
   const type = method === "login" ? "Login" : "Register";
   const toggleRoute = method === "login" ? "/register" : "/login";
@@ -142,10 +170,12 @@ function Form({ route, method }) {
             />
             <br />
             <br />
-            <h2>select location</h2>
+            <h2>Select Location</h2>
             <MapSelector
               setLatitude={setLatitude}
               setLongitude={setLongitude}
+              initialLatitude={latitude} // Pass the latitude to MapSelector
+              initialLongitude={longitude} // Pass the longitude to MapSelector
             />
             <br />
             <br />

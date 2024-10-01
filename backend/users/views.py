@@ -22,3 +22,9 @@ class UpdateProfileView(generics.UpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class DonorLocationView(generics.ListAPIView):
+    queryset = User.objects.filter(role="donor")
+    serializer_class = UserSerialiser
+    permission_classes = [permissions.IsAuthenticated]

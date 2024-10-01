@@ -7,4 +7,5 @@ urlpatterns = [
     path(
         "profile/<str:username>/edit/", UpdateProfileView.as_view(), name="edit_profile"
     ),
+    path("donors/", DonorLocationView.as_view(), name="donors"),
 ]

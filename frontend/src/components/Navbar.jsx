@@ -17,6 +17,9 @@ function Navbar() {
           <NavLink to={`/profile/${username}`} className="nav-link">
             Profile
           </NavLink>
+          <NavLink to={`/listings`} className="nav-link">
+            Listings
+          </NavLink>
         </div>
         <button className="logout-button" onClick={() => navigate("/logout")}>
           Logout
