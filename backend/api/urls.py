@@ -7,4 +7,5 @@ urlpatterns = [
     path("token/", CustomTokenObtainPairView.as_view(), name="get_token"),
     path("token/refresh/", TokenRefreshView.as_view(), name="refresh"),
     path('users/', include('users.urls')),
+    path('listings/', include('listings.urls')),
 ]
