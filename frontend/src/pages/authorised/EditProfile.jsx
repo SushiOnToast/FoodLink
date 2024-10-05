@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import LoadingIndicator from "../../components/LoadingIndicator";
-import { USERNAME } from "../../constants";
+import tokens from "../../constants";
 import MapSelector from "../../components/MapSelector";
 
 function EditProfile() {
-  const username = localStorage.getItem(USERNAME);
+  const username = localStorage.getItem(tokens.USERNAME);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({

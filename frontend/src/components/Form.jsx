@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
-import { ACCESS_TOKEN, REFRESH_TOKEN, USER_ROLE, USERNAME } from "../constants";
+import tokens from "../constants";
 import LoadingIndicator from "./LoadingIndicator";
 import MapSelector from "./MapSelector";
 import { jwtDecode } from "jwt-decode";
@@ -80,15 +80,15 @@ function Form({ route, method }) {
       const res = await api.post(route, data);
 
       if (method === "login") {
-        localStorage.setItem(ACCESS_TOKEN, res.data.access);
-        localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        localStorage.setItem(tokens.ACCESS_TOKEN, res.data.access);
+        localStorage.setItem(tokens.REFRESH_TOKEN, res.data.refresh);
 
-        const token = localStorage.getItem(ACCESS_TOKEN);
+        const token = localStorage.getItem(tokens.ACCESS_TOKEN);
         const decodedToken = jwtDecode(token);
         const userRole = decodedToken.role;
 
-        localStorage.setItem(USERNAME, username);
-        localStorage.setItem(USER_ROLE, userRole);
+        localStorage.setItem(tokens.USERNAME, username);
+        localStorage.setItem(tokens.USER_ROLE, userRole);
 
         navigate("/");
       } else {

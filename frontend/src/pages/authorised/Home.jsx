@@ -1,7 +1,7 @@
-import { USER_ROLE } from "../../constants";
+import tokens from "../../constants";
 
 function Home() {
-  const isRecipient = localStorage.getItem(USER_ROLE) === "recipient";
+  const isRecipient = localStorage.getItem(tokens.USER_ROLE) === "recipient";
 
   return (
     <div className="home-page">

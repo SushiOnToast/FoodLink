@@ -1,10 +1,10 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { USERNAME } from "../constants";
+import tokens from "../constants";
 
 function Navbar() {
   const navigate = useNavigate();
-  const username = localStorage.getItem(USERNAME);
+  const username = localStorage.getItem(tokens.USERNAME);
 
   return (
     <div className="nav-container">

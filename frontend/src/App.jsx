@@ -14,6 +14,7 @@ import Home from "./pages/authorised/Home";
 import ProfileView from "./pages/authorised/ProfileView";
 import EditProfile from "./pages/authorised/EditProfile";
 import Listings from "./pages/authorised/Listings";
+import DonorListings from "./pages/authorised/DonorListings";
 
 function Logout() {
   localStorage.clear();
@@ -54,6 +55,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Listings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/listings/yourlistings"
+            element={
+              <ProtectedRoute>
+                <DonorListings />
               </ProtectedRoute>
             }
           />

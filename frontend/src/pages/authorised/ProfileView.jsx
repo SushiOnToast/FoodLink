@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { USERNAME } from "../../constants";
+import tokens from "../../constants";
 import api from "../../api";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import MapView from "../../components/MapView";
@@ -9,7 +9,7 @@ function ProfileView() {
   const { username } = useParams();
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
-  const viewerUsername = localStorage.getItem(USERNAME);
+  const viewerUsername = localStorage.getItem(tokens.USERNAME);
   const navigate = useNavigate();
 
   useEffect(() => {

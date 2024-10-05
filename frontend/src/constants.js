@@ -1,4 +1,9 @@
-export const ACCESS_TOKEN="access";
-export const REFRESH_TOKEN="refresh";
-export const USERNAME="username";
-export const USER_ROLE="user_role";
+const tokens = {
+    ACCESS_TOKEN: "access",
+    REFRESH_TOKEN: "refresh",
+    USERNAME: "username",
+    USER_ROLE: "user_role",
+  };
+  
+  export default tokens;
+  
