@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from requests.serializers import RequestSerilialiser
 
 class FoodTypeSerialiser(serializers.ModelSerializer):
     class Meta:
@@ -15,6 +16,13 @@ class ListingSerialiser(serializers.ModelSerializer):
         many=True, 
         write_only=True, 
     )
+    requests = RequestSerilialiser(many=True, read_only=True)
+    listing_latitude = serializers.FloatField(
+        source="donor.latitude", read_only=True
+    )
+    listing_longitude = serializers.FloatField(
+        source="donor.longitude", read_only=True
+    )
 
     class Meta:
         model = Listing
@@ -28,6 +36,9 @@ class ListingSerialiser(serializers.ModelSerializer):
             "created_at",
             "food_types",
             "food_type_ids",
+            "requests",
+            "listing_latitude",
+            "listing_longitude",
         ]
         extra_kwargs = {
             "donor": {"read_only": True},

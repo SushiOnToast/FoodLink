@@ -32,6 +32,12 @@ class AllListingView(generics.ListAPIView):
         return Response(serializer.data)
 
 
+class ListingDetailView(generics.RetrieveAPIView):
+    queryset = Listing.objects.all()
+    serializer_class = ListingSerialiser
+    permission_classes = [IsAuthenticated]
+
+
 class DeleteListingView(generics.DestroyAPIView):
     serializer_class = ListingSerialiser
     permission_classes = [IsAuthenticated]

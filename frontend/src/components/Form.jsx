@@ -90,6 +90,10 @@ function Form({ route, method }) {
         localStorage.setItem(tokens.USERNAME, username);
         localStorage.setItem(tokens.USER_ROLE, userRole);
 
+        // Storing the user's latitude and longitude in localStorage
+        localStorage.setItem(tokens.USER_LATITUDE, latitude.toString());
+        localStorage.setItem(tokens.USER_LONGITUDE, longitude.toString());
+
         navigate("/");
       } else {
         navigate("/login");

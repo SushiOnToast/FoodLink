@@ -15,6 +15,8 @@ import ProfileView from "./pages/authorised/ProfileView";
 import EditProfile from "./pages/authorised/EditProfile";
 import Listings from "./pages/authorised/Listings";
 import DonorListings from "./pages/authorised/DonorListings";
+import ListingDetails from "./pages/authorised/ListingDetails";
+import RequestDetails from "./pages/authorised/RequestDetails";
 
 function Logout() {
   localStorage.clear();
@@ -63,6 +65,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <DonorListings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/listings/:listingId"
+            element={
+              <ProtectedRoute>
+                <ListingDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/requests/:requestId"
+            element={
+              <ProtectedRoute>
+                <RequestDetails />
               </ProtectedRoute>
             }
           />

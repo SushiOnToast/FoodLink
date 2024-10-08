@@ -19,6 +19,8 @@ function Listings() {
   const [filteredListings, setFilteredListings] = useState([]); // filtered listings
   const [allFoodTypes, setAllFoodTypes] = useState([]);
   const [selectedFoodTypes, setSelectedFoodTypes] = useState([]);
+  const [minQuantity, setMinQuantity] = useState(0);
+  const [maxQuantity, setMaxQuantity] = useState(100);
   const userRole = localStorage.getItem(tokens.USER_ROLE);
   const navigate = useNavigate();
 
@@ -88,23 +90,57 @@ function Listings() {
     }
   };
 
+  const filterListings = (minQty, maxQty) => {
+    let filtered = listings.filter((listing) => {
+      return listing.quantity >= minQty && listing.quantity <= maxQty;
+    });
+
+    if (selectedFoodTypes.length > 0) {
+      filtered = filtered.filter((listing) =>
+        listing.food_types.some((foodType) =>
+          selectedFoodTypes.includes(foodType.id)
+        )
+      );
+    }
+
+    setFilteredListings(filtered);
+  };
+
   const handleFoodTypeChange = (id) => {
     const updatedSelectedFoodTypes = selectedFoodTypes.includes(id)
       ? selectedFoodTypes.filter((foodTypeId) => foodTypeId !== id)
       : [...selectedFoodTypes, id];
-    
-    setSelectedFoodTypes(updatedSelectedFoodTypes);
 
-    // Filter listings based on the selected food types
-    if (updatedSelectedFoodTypes.length > 0) {
-      const filtered = listings.filter((listing) =>
-        listing.food_types.some((foodType) =>
-          updatedSelectedFoodTypes.includes(foodType.id)
-        )
+    setSelectedFoodTypes(updatedSelectedFoodTypes);
+    filterListings(minQuantity, maxQuantity); // Call to filter based on food types and quantities
+  };
+
+  const handleMinQuantityChange = (e) => {
+    const value = parseInt(e.target.value) || 0; // Default to 0 if NaN
+    setMinQuantity(value);
+    filterListings(value, maxQuantity);
+  };
+
+  const handleMaxQuantityChange = (e) => {
+    const value = parseInt(e.target.value) || 100; // Default to 100 if NaN
+    setMaxQuantity(value);
+    filterListings(minQuantity, value);
+  };
+
+  const handleDeleteListing = async (listingId) => {
+    try {
+      await api.delete(`/api/listings/delete/${listingId}/`);
+      // Remove deleted listing from state
+      setListings(listings.filter((listing) => listing.id !== listingId));
+      setFilteredListings(
+        filteredListings.filter((listing) => listing.id !== listingId)
       );
-      setFilteredListings(filtered);
-    } else {
-      setFilteredListings(listings); // show all if no filter is selected
+    } catch (error) {
+      console.error(
+        "Error deleting listing:",
+        error.response?.data || error.message
+      );
+      setError("Failed to delete the listing.");
     }
   };
 
@@ -127,6 +163,18 @@ function Listings() {
         onSelectItem={handleFoodTypeChange}
         placeholder="Filter by food type"
       />
+      <input
+        type="number"
+        value={minQuantity}
+        onChange={handleMinQuantityChange}
+        placeholder="Select min quantity for filter"
+      />
+      <input
+        type="number"
+        value={maxQuantity}
+        onChange={handleMaxQuantityChange}
+        placeholder="Select max quantity for filter"
+      />
       {userRole === "donor" && (
         <button onClick={() => navigate("/listings/yourlistings/")}>
           Your listings
@@ -137,7 +185,7 @@ function Listings() {
           .slice()
           .reverse()
           .map((listing) => (
-            <Listing key={listing.id} listing={listing} onDelete={() => {}} />
+            <Listing key={listing.id} listing={listing} onDelete={handleDeleteListing} />
           ))
       ) : (
         <p>No listings found.</p>

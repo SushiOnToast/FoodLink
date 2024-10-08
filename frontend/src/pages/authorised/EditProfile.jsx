@@ -14,8 +14,8 @@ function EditProfile() {
     email: "",
     username: "",
     about: "",
-    latitude: null, 
-    longitude: null, 
+    latitude: null,
+    longitude: null,
   });
 
   useEffect(() => {
@@ -27,7 +27,7 @@ function EditProfile() {
           email: response.data.email,
           username: response.data.username,
           about: response.data.about,
-          latitude: response.data.latitude, 
+          latitude: response.data.latitude,
           longitude: response.data.longitude,
         });
         setLoading(false);
@@ -55,9 +55,14 @@ function EditProfile() {
     try {
       await api.put(`/api/users/profile/${username}/edit/`, {
         ...formData,
-        latitude: formData.latitude, 
-        longitude: formData.longitude, 
+        latitude: formData.latitude,
+        longitude: formData.longitude,
       });
+
+      // Update localStorage with new latitude and longitude
+      localStorage.setItem(tokens.USER_LATITUDE, formData.latitude);
+      localStorage.setItem(tokens.USER_LONGITUDE, formData.longitude);
+
       alert("Profile updated successfully!");
       navigate(`/profile/${username}/`);
     } catch (err) {

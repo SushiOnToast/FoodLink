@@ -2,19 +2,20 @@ import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions"; // Import Mapbox Directions
 
-// Use the Vite environment variable
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
-function MapView({ latitude, longitude, viewType, donorLocations = [] }) {
+function MapView({ latitude, longitude, viewType, donorLocations = [], listingLatitude, listingLongitude, showRoute }) {
   const mapContainer = useRef(null);
   const mapInstance = useRef(null);
   const donorMarkers = useRef([]);
+  const directionsControl = useRef(null);
   const navigate = useNavigate();
 
+  // Initialize the map
   useEffect(() => {
     if (!mapInstance.current) {
-      // Default coordinates if none provided
       const defaultCoords = [longitude || 77.5946, latitude || 12.9716];
 
       const map = new mapboxgl.Map({
@@ -29,57 +30,88 @@ function MapView({ latitude, longitude, viewType, donorLocations = [] }) {
       // Create user marker
       new mapboxgl.Marker().setLngLat(defaultCoords).addTo(map);
     }
-  }, []); // Only runs once on mount
+  }, []); 
 
-  // This effect ensures the map updates when latitude or longitude change
+  // Update the map view if latitude or longitude change
   useEffect(() => {
     if (mapInstance.current && latitude && longitude) {
-      // Fly to the new location smoothly
       mapInstance.current.flyTo({
         center: [longitude, latitude],
-        essential: true, // Ensures the animation is smooth
+        essential: true,
         zoom: 12,
       });
 
-      // Update the user marker position
       new mapboxgl.Marker().setLngLat([longitude, latitude]).addTo(mapInstance.current);
     }
-  }, [latitude, longitude]); // This effect now runs whenever latitude or longitude change
+  }, [latitude, longitude]);
 
+  // Add listing marker if available
   useEffect(() => {
-    if (viewType === "DonorMap" && mapInstance.current) {
-      // Clear existing donor markers
-      donorMarkers.current.forEach((marker) => marker.remove());
-      donorMarkers.current = [];
+    if (mapInstance.current && listingLatitude && listingLongitude) {
+      const listingMarker = new mapboxgl.Marker({ color: "green" })
+        .setLngLat([listingLongitude, listingLatitude])
+        .addTo(mapInstance.current);
 
-      // Add new donor markers
-      donorLocations.forEach((donor) => {
-        const marker = new mapboxgl.Marker({ color: "red" })
+      const listingPopup = new mapboxgl.Popup()
+        .setText("Listing Location")
+        .setLngLat([listingLongitude, listingLatitude])
+        .addTo(mapInstance.current);
+
+      listingMarker.setPopup(listingPopup);
+    }
+  }, [listingLatitude, listingLongitude]);
+
+  // Add markers for donor locations
+  useEffect(() => {
+    if (mapInstance.current && donorLocations.length) {
+      donorMarkers.current.forEach((marker) => marker.remove()); // Clear old markers
+      donorMarkers.current = donorLocations.map((donor) => {
+        const marker = new mapboxgl.Marker({ color: "blue" })
           .setLngLat([donor.longitude, donor.latitude])
           .addTo(mapInstance.current);
-
-        // Create a popup but don't add it to the map yet
-        const popup = new mapboxgl.Popup({
-          closeButton: false,
-          closeOnClick: false,
-        }).setText(donor.first_name);
-
-        marker.setPopup(popup).togglePopup();
-
-        marker.getElement().addEventListener("click", () => {
-          navigate(`/profile/${donor.username}/`);
+        marker.getElement().addEventListener('click', () => {
+          // Navigate to donor listing page or show details on click
+          navigate(`/donor/${donor.id}`);
         });
-
-        donorMarkers.current.push(marker);
+        return marker;
       });
     }
-  }, [donorLocations, viewType]);
+  }, [donorLocations, navigate]);
 
-  return (
-    <div>
-      <div ref={mapContainer} style={{ width: "100%", height: "400px" }} />
-    </div>
-  );
+  // Effect to show route if the request is accepted
+  useEffect(() => {
+    if (showRoute && listingLatitude && listingLongitude && latitude && longitude && mapInstance.current) {
+      // Add directions control to the map
+      if (!directionsControl.current) {
+        directionsControl.current = new MapboxDirections({
+          accessToken: mapboxgl.accessToken,
+          unit: "metric",
+          profile: "mapbox/driving", // Specify driving profile
+        });
+
+        mapInstance.current.addControl(directionsControl.current, "top-left");
+      }
+
+      // Set the origin (listing location) and destination (recipient location)
+      directionsControl.current.setOrigin([listingLongitude, listingLatitude]);
+      directionsControl.current.setDestination([longitude, latitude]);
+    }
+  }, [showRoute, listingLatitude, listingLongitude, latitude, longitude]);
+
+  // Optional: Change the map view type based on `viewType` prop (e.g., satellite, streets, etc.)
+  useEffect(() => {
+    if (mapInstance.current && viewType) {
+      const styles = {
+        streets: "mapbox://styles/mapbox/streets-v11",
+        satellite: "mapbox://styles/mapbox/satellite-v9",
+        dark: "mapbox://styles/mapbox/dark-v10",
+        light: "mapbox://styles/mapbox/light-v10",
+      };
+      mapInstance.current.setStyle(styles[viewType] || styles.streets);
+    }
+  }, [viewType]);
+
+  return <div ref={mapContainer} style={{ width: "100%", height: "400px" }} />;
 }
 
 export default MapView;
