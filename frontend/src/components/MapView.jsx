@@ -2,11 +2,10 @@ import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions"; // Import Mapbox Directions
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
-function MapView({ latitude, longitude, viewType, donorLocations = [], listingLatitude, listingLongitude, showRoute }) {
+function MapView({ latitude, longitude, viewType, donorLocations = [], listingLatitude, listingLongitude }) {
   const mapContainer = useRef(null);
   const mapInstance = useRef(null);
   const donorMarkers = useRef([]);
@@ -78,25 +77,6 @@ function MapView({ latitude, longitude, viewType, donorLocations = [], listingLa
     }
   }, [donorLocations, navigate]);
 
-  // Effect to show route if the request is accepted
-  useEffect(() => {
-    if (showRoute && listingLatitude && listingLongitude && latitude && longitude && mapInstance.current) {
-      // Add directions control to the map
-      if (!directionsControl.current) {
-        directionsControl.current = new MapboxDirections({
-          accessToken: mapboxgl.accessToken,
-          unit: "metric",
-          profile: "mapbox/driving", // Specify driving profile
-        });
-
-        mapInstance.current.addControl(directionsControl.current, "top-left");
-      }
-
-      // Set the origin (listing location) and destination (recipient location)
-      directionsControl.current.setOrigin([listingLongitude, listingLatitude]);
-      directionsControl.current.setDestination([longitude, latitude]);
-    }
-  }, [showRoute, listingLatitude, listingLongitude, latitude, longitude]);
 
   // Optional: Change the map view type based on `viewType` prop (e.g., satellite, streets, etc.)
   useEffect(() => {

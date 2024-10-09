@@ -105,7 +105,7 @@ function EditProfile() {
         <textarea
           type="textarea"
           name="about"
-          value={formData.about}
+          value={formData.about || ""}
           onChange={handleChange}
           placeholder="About me"
         />

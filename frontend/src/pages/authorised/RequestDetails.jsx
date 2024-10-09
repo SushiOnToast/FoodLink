@@ -73,7 +73,6 @@ function RequestDetails() {
         longitude={request.recipient_longitude}
         listingLatitude={request.listing_latitude}
         listingLongitude={request.listing_longitude}
-        showRoute={request.status === "accepted"}
       />
     </div>
   );

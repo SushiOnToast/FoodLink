@@ -4,95 +4,95 @@ import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
-// Use the Vite environment variable
+// Use the Vite environment variable for the Mapbox token
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 function MapSelector({ setLatitude, setLongitude, initialLatitude, initialLongitude }) {
-  const mapContainer = useRef(null);
-  const mapInstance = useRef(null);
-  const markerRef = useRef(null);
+  const mapContainer = useRef(null); // Reference to the map container DOM element
+  const mapInstance = useRef(null);  // Store the map instance to prevent re-initialization
+  const markerRef = useRef(null);    // Store a reference to the marker
 
   useEffect(() => {
-    if (mapInstance.current) return; // Prevent re-initialization
+    // Ensure the map is only initialized once
+    if (mapInstance.current) return;
 
-    const initialiseMap = (lat, lng) => {
-      const map = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: "mapbox://styles/mapbox/streets-v11",
-        center: [lng, lat], // Use initial coordinates
-        zoom: 12,
-      });
+    const lat = initialLatitude ?? 0; // Default latitude if not provided
+    const lng = initialLongitude ?? 0; // Default longitude if not provided
 
-      mapInstance.current = map;
+    // Initialize the Mapbox map
+    const map = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [lng, lat],
+      zoom: 12,
+    });
 
-      const geocoder = new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken,
-        mapboxgl: mapboxgl,
-        placeholder: "Search for an address",
-        marker: false,
-      });
+    mapInstance.current = map; // Store the map instance
 
-      map.addControl(geocoder);
+    // Initialize the Geocoder
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl,
+      placeholder: "Search for an address",
+      marker: false, // Disable the default marker
+    });
 
-      // Update marker and coordinates on geocoder search
-      geocoder.on("result", (e) => {
-        const { lng, lat } = e.result.center;
-        updateMarkerAndFlyTo(map, lat, lng);
-      });
+    // Add the geocoder control to the map
+    map.addControl(geocoder);
 
-      // Initialize marker at the user's current location
-      if (lat && lng) {
-        const userMarker = new mapboxgl.Marker()
-          .setLngLat([lng, lat])
-          .addTo(map);
-        markerRef.current = userMarker;
-      }
+    // Handle the geocoder result event to update the marker position
+    geocoder.on("result", (e) => {
+      const { lng, lat } = e.result.center;
+      updateMarkerAndFlyTo(map, lat, lng); // Fly the map and update the marker
+    });
 
-      // Update marker and coordinates on map click
-      map.on("click", (e) => {
-        const { lng, lat } = e.lngLat;
-        updateMarkerAndFlyTo(map, lat, lng);
-      });
+    // Add a marker if initial latitude and longitude are provided
+    if (lat && lng) {
+      const initialMarker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+      markerRef.current = initialMarker; // Store the marker reference
+    }
 
-      map.on("styleimagemissing", (e) => {
-        const missingImageId = e.id;
-        console.warn(`Image missing: ${missingImageId}`);
-      });
-    };
+    // Update marker position on map click
+    map.on("click", (e) => {
+      const { lng, lat } = e.lngLat;
+      updateMarkerAndFlyTo(map, lat, lng);
+    });
 
-    // Update the map center and marker
-    const updateMarkerAndFlyTo = (map, lat, lng) => {
-      setLatitude(lat);
-      setLongitude(lng);
-
-      if (markerRef.current) {
-        markerRef.current.remove();
-      }
-
-      const newMarker = new mapboxgl.Marker()
-        .setLngLat([lng, lat])
-        .addTo(map);
-      markerRef.current = newMarker;
-
-      map.flyTo({
-        center: [lng, lat],
-        essential: true,
-      });
-    };
-
-    // Initialise the map with the initial coordinates
-    initialiseMap(initialLatitude, initialLongitude);
-
+    // Cleanup map instance on component unmount
     return () => {
       if (mapInstance.current) {
         mapInstance.current.remove();
         mapInstance.current = null;
       }
     };
-  }, [initialLatitude, initialLongitude]); // Re-run effect when location updates
+  }, []); // Empty dependency array to run this effect only once
+
+  // Function to update the marker position and fly the map
+  const updateMarkerAndFlyTo = (map, lat, lng) => {
+    if (!isNaN(lat) && !isNaN(lng)) {
+      setLatitude(lat); // Update latitude in parent component
+      setLongitude(lng); // Update longitude in parent component
+
+      // Remove the previous marker
+      if (markerRef.current) {
+        markerRef.current.remove();
+      }
+
+      // Create and add a new marker at the new coordinates
+      const newMarker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+      markerRef.current = newMarker; // Update marker reference
+
+      // Fly the map to the new coordinates smoothly
+      map.flyTo({
+        center: [lng, lat],
+        essential: true, // Ensures the animation is considered essential
+      });
+    }
+  };
 
   return (
     <div>
+      {/* Map container with a defined size */}
       <div ref={mapContainer} style={{ width: "100%", height: "400px" }} />
     </div>
   );
