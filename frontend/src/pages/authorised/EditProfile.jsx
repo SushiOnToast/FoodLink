@@ -12,10 +12,12 @@ function EditProfile() {
   const [formData, setFormData] = useState({
     first_name: "",
     email: "",
-    username: "",
+    username: username,
     about: "",
     latitude: null,
     longitude: null,
+    profile_picture: null,
+    profile_picture_preview: null, // For preview
   });
 
   useEffect(() => {
@@ -29,6 +31,8 @@ function EditProfile() {
           about: response.data.about,
           latitude: response.data.latitude,
           longitude: response.data.longitude,
+          profile_picture: response.data.profile_picture,
+          profile_picture_preview: response.data.profile_picture, // Set preview to current profile picture
         });
         setLoading(false);
       } catch (err) {
@@ -48,15 +52,32 @@ function EditProfile() {
     });
   };
 
+  const handleFileChange = (e) => {
+    setFormData({
+      ...formData,
+      profile_picture: e.target.files[0],  // New profile picture
+      profile_picture_preview: URL.createObjectURL(e.target.files[0]),  // Update preview
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      await api.put(`/api/users/profile/${username}/edit/`, {
-        ...formData,
-        latitude: formData.latitude,
-        longitude: formData.longitude,
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append("first_name", formData.first_name);
+      formDataToSubmit.append("username", formData.username);
+      formDataToSubmit.append("email", formData.email);
+      formDataToSubmit.append("about", formData.about);
+      formDataToSubmit.append("latitude", formData.latitude);
+      formDataToSubmit.append("longitude", formData.longitude);
+      if (formData.profile_picture) {
+        formDataToSubmit.append("profile_picture", formData.profile_picture);
+      }
+
+      await api.put(`/api/users/profile/${username}/edit/`, formDataToSubmit, {
+        headers: {"Content-Type": "multipart/form-data"},
       });
 
       // Update localStorage with new latitude and longitude
@@ -117,6 +138,16 @@ function EditProfile() {
           initialLatitude={formData.latitude} // Pass existing latitude
           initialLongitude={formData.longitude} // Pass existing longitude
         />
+        <br />
+        <h2>Profile Picture</h2>
+        {formData.profile_picture_preview && (
+          <img
+            src={formData.profile_picture_preview}
+            alt="Profile Preview"
+            style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+          />
+        )}
+        <input type="file" name="profile_picture" onChange={handleFileChange} />
         <br />
         <button type="submit" disabled={loading}>
           Save Changes

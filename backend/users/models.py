@@ -14,5 +14,6 @@ class User(AbstractUser):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
 
+    profile_picture = models.ImageField(upload_to="profile_pictures/", null=True, blank=True, default="profile_pictures/default.jpeg")
     
 

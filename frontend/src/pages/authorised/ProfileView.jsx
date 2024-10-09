@@ -28,11 +28,20 @@ function ProfileView() {
     fetchUserData();
   }, [username]);
 
+  const profilePictureUrl =
+    user.profile_picture || "/media/profile_pictures/default.jpg"; // Fallback to default
+
   if (loading) return <LoadingIndicator />;
 
   return (
     <div className="profile-page">
       <div className="profile-details">
+        <img
+          src={profilePictureUrl}
+          alt="Profile"
+          className="profile-picture"
+          style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+        />
         <h1 className="name">{user.first_name}</h1>
         <p className="username">@{username}</p>
         <p className="role">{user.role}</p>

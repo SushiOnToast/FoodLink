@@ -25,6 +25,7 @@ function ListingDetails() {
     try {
       const response = await api.get(`/api/listings/${listingId}`);
       setListing(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
       alert(error);
@@ -42,6 +43,13 @@ function ListingDetails() {
   return (
     <div>
       <button onClick={handleClick}>Back to listings</button>
+      {listing.cover_image && (
+        <img
+          src={listing.cover_image} // Display cover image
+          alt={listing.name}
+          style={{ width: "100px", height: "100px", objectFit: "cover" }}
+        />
+      )}
       <h2>{listing.name}</h2>
       <p>Quantity: {listing.quantity}</p>
       <p>Special notes:</p>
@@ -55,7 +63,9 @@ function ListingDetails() {
         </div>
       )}
 
-      {userRole === "recipient" && listing.quantity !== 0 && <RequestForm listing={listing} />}
+      {userRole === "recipient" && listing.quantity !== 0 && (
+        <RequestForm listing={listing} />
+      )}
 
       {/* MapView displaying the user's location and the donor's location */}
       <MapView

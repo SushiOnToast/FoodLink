@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import *
 from requests.views import DonorListingWithRequestView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("", CreateListingView.as_view(), name="create_listing"),
@@ -10,3 +12,6 @@ urlpatterns = [
     path("<int:pk>/", ListingDetailView.as_view(), name="listing_details"),
     path("requests/", DonorListingWithRequestView.as_view(), name="requests"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

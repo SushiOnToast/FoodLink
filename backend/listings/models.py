@@ -11,13 +11,13 @@ class FoodType(models.Model):
 
 
 class Listing(models.Model):
-
     name = models.CharField(max_length=255)
     quantity = models.PositiveIntegerField(default=0)
     special_notes = models.TextField()
     donor = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     food_types = models.ManyToManyField(FoodType, blank=True)
+    cover_image = models.ImageField(upload_to='listing_images/', null=True, blank=True)  
 
     def __str__(self):
         return self.name

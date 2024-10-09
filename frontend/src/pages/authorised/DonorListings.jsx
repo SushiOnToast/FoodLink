@@ -12,6 +12,7 @@ function DonorListings() {
   const [loading, setLoading] = useState(true);
   const [foodTypes, setFoodTypes] = useState([]);
   const [selectedFoodTypes, setSelectedFoodTypes] = useState([]);
+  const [coverImage, setCoverImage] = useState(null);
 
   useEffect(() => {
     fetchFoodTypes();
@@ -48,18 +49,25 @@ function DonorListings() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await api.post("/api/listings/", {
-        name,
-        quantity: parseInt(quantity, 10), // Convert quantity to number
-        special_notes: specialNotes,
-        food_type_ids: selectedFoodTypes,
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("quantity", parseInt(quantity, 10));
+      formData.append("special_notes", specialNotes);
+      formData.append("food_type_ids", selectedFoodTypes);
+      if (coverImage) formData.append("cover_image", coverImage); // Append the image to the form data
+
+      const response = await api.post("/api/listings/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Use multipart for image upload
+        },
       });
       if (response.status === 201) {
         alert("Resource created");
         setName("");
-        setQuantity(0); // Reset quantity to 0
+        setQuantity(0);
         setSpecialNotes("");
         setSelectedFoodTypes([]);
+        setCoverImage(null); // Reset cover image
         fetchListings();
       } else {
         alert("failed to create listing");
@@ -88,16 +96,15 @@ function DonorListings() {
     } finally {
       setLoading(false);
     }
-
   };
 
   const handleFoodTypeSelection = (id) => {
     const updatedSelectedFoodTypes = selectedFoodTypes.includes(id)
       ? selectedFoodTypes.filter((foodTypeId) => foodTypeId !== id)
       : [...selectedFoodTypes, id];
-  
+
     setSelectedFoodTypes(updatedSelectedFoodTypes); // Update the state with the new array
-  };  
+  };
 
   if (loading) return <LoadingIndicator />;
 
@@ -141,6 +148,12 @@ function DonorListings() {
           selectedItems={selectedFoodTypes}
           onSelectItem={handleFoodTypeSelection}
           placeholder="select food types that apply"
+        />
+        <br />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setCoverImage(e.target.files[0])} // Handle image upload
         />
         <br />
         <input

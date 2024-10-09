@@ -70,7 +70,7 @@ function MapView({ latitude, longitude, viewType, donorLocations = [], listingLa
           .addTo(mapInstance.current);
         marker.getElement().addEventListener('click', () => {
           // Navigate to donor listing page or show details on click
-          navigate(`/donor/${donor.id}`);
+          navigate(`/profile/${donor.username}`);
         });
         return marker;
       });

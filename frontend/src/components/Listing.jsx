@@ -13,8 +13,17 @@ function Listing({ listing, onDelete }) {
     navigate(`/listings/${listing.id}/`);
   };
 
+  const baseUrl = import.meta.env.VITE_IMG_BASE_URL;
+
   return (
     <div onClick={handleClick}>
+      {listing.cover_image && (
+        <img
+          src={`${baseUrl}${listing.cover_image}`}  // Display cover image
+          alt={listing.name}
+          style={{ width: "100px", height: "100px", objectFit: "cover" }}
+        />
+      )}
       <h3>{listing.name}</h3>
       {listing.food_types && listing.food_types.length > 0 && (
         <div>

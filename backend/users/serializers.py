@@ -45,7 +45,8 @@ class UserSerialiser(serializers.ModelSerializer):
             "role",
             "about",
             "latitude",
-            "longitude",      
+            "longitude", 
+            "profile_picture",     
         ]
 
 
@@ -59,4 +60,5 @@ class UpdateProfileSerialiser(serializers.ModelSerializer):
             "about",
             "latitude",
             "longitude",
+            "profile_picture",
         ]
