@@ -14,10 +14,14 @@ import Home from "./pages/authorised/Home";
 import ProfileView from "./pages/authorised/ProfileView";
 import EditProfile from "./pages/authorised/EditProfile";
 import EditListing from "./pages/authorised/EditListing";
+import EditResource from "./pages/authorised/EditResource";
 import Listings from "./pages/authorised/Listings";
+import Resources from "./pages/authorised/Resources";
 import DonorListings from "./pages/authorised/DonorListings";
+import DonorResources from "./pages/authorised/DonorResources";
 import ListingDetails from "./pages/authorised/ListingDetails";
 import RequestDetails from "./pages/authorised/RequestDetails";
+import ResourceDetails from "./pages/authorised/ResourceDetails";
 
 function Logout() {
   localStorage.clear();
@@ -62,10 +66,26 @@ function App() {
             }
           />
           <Route
+            path="/resources"
+            element={
+              <ProtectedRoute>
+                <Resources />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/listings/yourlistings"
             element={
               <ProtectedRoute>
                 <DonorListings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/resources/yourResources"
+            element={
+              <ProtectedRoute>
+                <DonorResources />
               </ProtectedRoute>
             }
           />
@@ -90,6 +110,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <RequestDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/resources/:resourceId"
+            element={
+              <ProtectedRoute>
+                <ResourceDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/resources/:resourceId/edit"
+            element={
+              <ProtectedRoute>
+                <EditResource />
               </ProtectedRoute>
             }
           />

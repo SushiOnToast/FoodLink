@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "users",
     "listings",
     "requests",
+    "resources",
     "corsheaders",
 ]
 

@@ -20,6 +20,9 @@ function Navbar() {
           <NavLink to={`/listings`} className="nav-link">
             Listings
           </NavLink>
+          <NavLink to={`/resources`} className="nav-link">
+            Resources
+          </NavLink>
         </div>
         <button className="logout-button" onClick={() => navigate("/logout")}>
           Logout
