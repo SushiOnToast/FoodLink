@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import api from "../api";
 import { useParams } from "react-router-dom";
+import "../styles/ListingDetails.css";
 
 function RequestForm({ listing }) {
   const { listingId } = useParams(); // Get the listing ID from the URL parameters
@@ -53,7 +54,7 @@ function RequestForm({ listing }) {
   };
 
   return (
-    <div>
+    <div className="request-form">
       <h3>Request this listing</h3>
       {successMessage && <p>{successMessage}</p>}{" "}
       {/* Display success message if available */}
@@ -61,7 +62,7 @@ function RequestForm({ listing }) {
       {/* Display error message if available */}
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Quantity to request</label>
+          <label>Quantity to request:</label>
           <input
             type="number"
             value={quantity}
@@ -72,7 +73,8 @@ function RequestForm({ listing }) {
           />
         </div>
         <div>
-          <label>Additional Notes</label>
+          <label>Additional Notes:</label>
+          <br />
           <textarea
             value={additionalNotes}
             onChange={(e) => setAdditionalNotes(e.target.value)}

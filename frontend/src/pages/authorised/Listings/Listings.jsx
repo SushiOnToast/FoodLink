@@ -6,6 +6,7 @@ import tokens from "../../../constants";
 import Listing from "../../../components/Listing";
 import { useNavigate } from "react-router-dom";
 import MultiSelectDropdown from "../../../components/MultiSelectDropdown";
+import "../../../styles/Listings.css";
 
 function Listings() {
   const [donors, setDonors] = useState([]); // Store donor data
@@ -161,54 +162,74 @@ function Listings() {
   }
 
   return (
-    <>
+    <div className="listings-page">
+      <h2>Find donors near you</h2>
       {error && <div className="error-message">{error}</div>}{" "}
       {/* Display error messages */}
-      <MapView
-        latitude={latitude}
-        longitude={longitude}
-        viewType="DonorMap"
-        donorLocations={donors}
-      />
+      <div className="map-container">
+        <MapView
+          latitude={latitude}
+          longitude={longitude}
+          viewType="DonorMap"
+          donorLocations={donors}
+        />
+      </div>
       <h2>Listings</h2>
-      <MultiSelectDropdown
-        items={allFoodTypes}
-        selectedItems={selectedFoodTypes}
-        onSelectItem={handleFoodTypeChange}
-        placeholder="Filter by food type"
-      />
-      <input
-        type="number"
-        value={minQuantity}
-        onChange={handleMinQuantityChange}
-        placeholder="Select min quantity for filter"
-      />
-      <input
-        type="number"
-        value={maxQuantity}
-        onChange={handleMaxQuantityChange}
-        placeholder="Select max quantity for filter"
-      />
+      <div className="filters">
+        <MultiSelectDropdown
+          items={allFoodTypes}
+          selectedItems={selectedFoodTypes}
+          onSelectItem={handleFoodTypeChange}
+          placeholder="Filter by food type"
+        />
+        <div className="serving-filter">
+          <div className="min-quantity">
+            <label htmlFor="minQuantity">Minimum serving:</label>
+            <input
+              type="number"
+              name="minQuantity"
+              value={minQuantity}
+              onChange={handleMinQuantityChange}
+              placeholder="Select min quantity for filter"
+            />
+          </div>
+          <div className="max-quantity">
+            <label htmlFor="maxQuantity">Maximum serving:</label>
+            <input
+              type="number"
+              name="maxQuantity"
+              value={maxQuantity}
+              onChange={handleMaxQuantityChange}
+              placeholder="Select max quantity for filter"
+            />
+          </div>
+        </div>
+      </div>
       {userRole === "donor" && (
-        <button onClick={() => navigate("/listings/yourlistings/")}>
+        <button
+          className="create-listing-btn"
+          onClick={() => navigate("/listings/yourlistings/")}
+        >
           Your Listings
         </button>
       )}
-      {filteredListings.length > 0 ? (
-        filteredListings
-          .slice() // Create a copy of the array
-          .reverse() // Reverse for latest first
-          .map((listing) => (
-            <Listing
-              key={listing.id}
-              listing={listing}
-              onDelete={handleDeleteListing}
-            />
-          ))
-      ) : (
-        <p>No listings found.</p> // Message if no listings match the filter
-      )}
-    </>
+      <div className="listings-grid">
+        {filteredListings.length > 0 ? (
+          filteredListings
+            .slice() // Create a copy of the array
+            .reverse() // Reverse for latest first
+            .map((listing) => (
+              <Listing
+                key={listing.id}
+                listing={listing}
+                onDelete={handleDeleteListing}
+              />
+            ))
+        ) : (
+          <p>No listings found.</p> // Message if no listings match the filter
+        )}
+      </div>
+    </div>
   );
 }
 

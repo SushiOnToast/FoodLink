@@ -5,6 +5,7 @@ import tokens from "../../../constants";
 import Resource from "../../../components/Resource"; // Component for displaying individual resources
 import { useNavigate } from "react-router-dom";
 import MultiSelectDropdown from "../../../components/MultiSelectDropdown";
+import "../../../styles/Resource.css";
 
 function Resources() {
   const [resources, setResources] = useState([]); // All available resources
@@ -112,35 +113,42 @@ function Resources() {
   if (loading) return <LoadingIndicator />;
 
   return (
-    <>
+    <div className="resources-page">
       {error && <div className="error-message">{error}</div>}{" "}
       {/* Display error message if exists */}
-      <h2>Resources</h2>
-      {/* Multi-select dropdown for filtering resources by categories */}
-      <MultiSelectDropdown
-        items={categories}
-        selectedItems={selectedCategories}
-        onSelectItem={handleCategoryChange}
-        placeholder="Filter by category"
-      />
-      {userRole === "donor" && (
-        <button onClick={() => navigate("/resources/yourresources")}>
-          Your resources
-        </button>
-      )}
-      {/* Display filtered resources or a message if none found */}
-      {filteredResources.length > 0 ? (
-        filteredResources.map((resource) => (
-          <Resource
-            key={resource.id}
-            resource={resource}
-            onDelete={handleDeleteResource}
-          />
-        ))
-      ) : (
-        <p>No resources found.</p>
-      )}
-    </>
+      <h1>Resources</h1>
+      <div className="resources-buttons">
+        {/* Multi-select dropdown for filtering resources by categories */}
+        <MultiSelectDropdown
+          items={categories}
+          selectedItems={selectedCategories}
+          onSelectItem={handleCategoryChange}
+          placeholder="Filter by category"
+        />
+        {userRole === "donor" && (
+          <button
+            className="create-listing-btn"
+            onClick={() => navigate("/resources/yourresources")}
+          >
+            Your resources
+          </button>
+        )}
+      </div>
+      <div className="resource-grid">
+        {/* Display filtered resources or a message if none found */}
+        {filteredResources.length > 0 ? (
+          filteredResources.map((resource) => (
+            <Resource
+              key={resource.id}
+              resource={resource}
+              onDelete={handleDeleteResource}
+            />
+          ))
+        ) : (
+          <p>No resources found.</p>
+        )}
+      </div>
+    </div>
   );
 }
 

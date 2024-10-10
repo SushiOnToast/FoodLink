@@ -4,6 +4,7 @@ import api from "../../api";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import tokens from "../../constants";
 import MapSelector from "../../components/MapSelector";
+import "../../styles/EditProfile.css";
 
 function EditProfile() {
   const username = localStorage.getItem(tokens.USERNAME); // Get the current username from local storage
@@ -11,8 +12,8 @@ function EditProfile() {
   const [loading, setLoading] = useState(true); // Loading state for API calls
   const [formData, setFormData] = useState({
     first_name: "",
-    email: "",
     username: username,
+    email: "",
     about: "",
     latitude: null,
     longitude: null,
@@ -28,8 +29,8 @@ function EditProfile() {
         // Update formData with fetched profile details
         setFormData({
           first_name: response.data.first_name,
-          email: response.data.email,
           username: response.data.username,
+          email: response.data.email,
           about: response.data.about,
           latitude: response.data.latitude,
           longitude: response.data.longitude,
@@ -79,8 +80,11 @@ function EditProfile() {
       formDataToSubmit.append("latitude", formData.latitude);
       formDataToSubmit.append("longitude", formData.longitude);
 
-      // Append profile picture if it's selected
-      if (formData.profile_picture) {
+      // Append profile picture if a new one is selected
+      if (
+        formData.profile_picture &&
+        formData.profile_picture !== formData.profile_picture_preview
+      ) {
         formDataToSubmit.append("profile_picture", formData.profile_picture);
       }
 
@@ -111,6 +115,7 @@ function EditProfile() {
       <h1>Edit Profile</h1>
       <form onSubmit={handleSubmit}>
         {/* Input for first name */}
+        <label htmlFor="first_name">Name</label>
         <input
           type="text"
           name="first_name"
@@ -120,6 +125,7 @@ function EditProfile() {
           required // Required field for validation
         />
         {/* Input for email */}
+        <label htmlFor="email">Email</label>
         <input
           type="email"
           name="email"
@@ -129,6 +135,7 @@ function EditProfile() {
           required // Required field for validation
         />
         {/* Input for username (disabled as it shouldn't be changed) */}
+        <label htmlFor="username">Username</label>
         <input
           type="text"
           name="username"
@@ -139,6 +146,7 @@ function EditProfile() {
         />
         <br />
         {/* Textarea for 'about' section */}
+        <label htmlFor="about">About me</label>
         <textarea
           name="about"
           value={formData.about || ""}
@@ -146,16 +154,19 @@ function EditProfile() {
           placeholder="About me"
         />
         <br />
-        <h2>Select Location</h2>
+        <h2>Edit Location</h2>
         {/* Map selector for location input */}
-        <MapSelector
-          setLatitude={(lat) => setFormData({ ...formData, latitude: lat })}
-          setLongitude={(lng) => setFormData({ ...formData, longitude: lng })}
-          initialLatitude={formData.latitude} // Pass existing latitude
-          initialLongitude={formData.longitude} // Pass existing longitude
-        />
+        <div className="map-container">
+          <MapSelector
+            setLatitude={(lat) => setFormData({ ...formData, latitude: lat })}
+            setLongitude={(lng) => setFormData({ ...formData, longitude: lng })}
+            initialLatitude={formData.latitude} // Pass existing latitude
+            initialLongitude={formData.longitude} // Pass existing longitude
+          />
+        </div>
+
         <br />
-        <h2>Profile Picture</h2>
+        <h2>Edit Profile Picture</h2>
         {/* Display profile picture preview if available */}
         {formData.profile_picture_preview && (
           <img

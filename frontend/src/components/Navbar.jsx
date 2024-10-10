@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import tokens from "../constants";
+import "../styles/Navbar.css";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ function Navbar() {
   return (
     <div className="nav-container">
       <nav className="navbar-home">
-        <div>FoodLink</div>
+        <div className="foodLink">FoodLink</div>
         <div className="nav-links">
           <NavLink to="/" className="nav-link">
             Home

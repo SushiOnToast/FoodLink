@@ -1,0 +1,142 @@
+.listing-details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.back-button {
+    background-color: black;
+    color: #FDFAE7;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition-duration: 0.2s;
+}
+
+.back-button:hover {
+    transform: scale(1.1);
+}
+
+.listing-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    padding: 20px;
+    background-color: #6c6c6c;
+    max-width: 800px;
+    width: 100%;
+}
+
+.listing-image-details {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.listing-content {
+    padding: 20px;
+}
+
+.food-types {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.food-type {
+    background-color: none;
+    color: #FDFAE7;
+    border: 1px solid #FDFAE7;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.listing-card h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #FDFAE7;
+    font-weight: 400;
+}
+
+.listing-card p {
+    margin: 5px 0;
+    color: #FDFAE7;
+}
+
+small {
+    display: block;
+    margin-bottom: 10px;
+    color: #c4c4c4;
+}
+
+.listing-card button {
+    background-color: black;
+    color: #FDFAE7;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition-duration: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+button+button {
+    margin-left: 7px;
+}
+
+button:focus {
+    outline: none;
+}
+
+.normal-info {
+    display: flex;
+    width: 100%;
+}
+
+.normal-info > div {
+    flex-basis: 50%;
+}
+
+.request-form {
+    border: 1px solid #FDFAE7;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.request-form label {
+    font-size: 14px;
+    color: #FDFAE7;
+    margin-top: 10px;
+}
+
+.request-form textarea {
+    background-color: #FDFAE7;
+    resize: none;
+    border-radius: 10px;
+    width: 100%;
+    height: 50px;
+    margin-top: 5px;
+    padding: 10px;
+}
+
+.request-form input {
+    background-color: #FDFAE7;
+    border: none;
+    border-radius: 5px;
+    margin-left: 5px;
+    height: 30px;
+    width: 100px;
+    padding: 10px;
+}

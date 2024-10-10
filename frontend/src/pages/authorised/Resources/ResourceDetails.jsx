@@ -50,51 +50,58 @@ function ResourceDetails() {
 
   if (loading) return <LoadingIndicator />;
   if (error) return <div className="error-message">{error}</div>; // Display error message
-  if (!resource) return <div>No resource found.</div>;
+  if (!resource) return <div className="error-message">No resource found.</div>;
 
   const isOwner = resource.author_username === viewerUsername;
 
   return (
-    <div>
-      <button onClick={handleClick}>Back to resources</button>
-      <h2>{resource.title}</h2>
-      <small>
-        Created on{" "}
-        <i>{new Date(resource.created_at).toLocaleDateString("en-US")}</i>
-      </small>
-      <p>{resource.content}</p>
+    <div className="resource-details-container">
+      <button className="back-button" onClick={handleClick}>
+        Back to resources
+      </button>
+      <div className="resource-details-card">
+        <div className="resource-details-content">
+          <h2>{resource.title}</h2>
+          <small>
+            Created on{" "}
+            <i>{new Date(resource.created_at).toLocaleDateString("en-US")}</i>
+          </small>
+          <p>{resource.content}</p>
 
-      {resource.categories && resource.categories.length > 0 && (
-        <div>
-          <strong>Categories:</strong>
-          <div>
-            {resource.categories.map((category) => (
-              <span key={category.id}>{category.name}</span>
-            ))}
-          </div>
+          {resource.categories && resource.categories.length > 0 && (
+            <div className="resource-details-categories">
+              <div>
+                {resource.categories.map((category) => (
+                  <span key={category.id} className="resource-details-category">
+                    {category.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {isOwner && (
+            <div className="resource-buttons">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/resources/${resource.id}/edit`); // Navigate to edit page
+                }}
+              >
+                Edit Resource
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent click from navigating
+                  handleDeleteResource(resource.id); // Call the onDelete function
+                }}
+              >
+                Delete Resource
+              </button>
+            </div>
+          )}
         </div>
-      )}
-
-      {isOwner && (
-        <>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/resources/${resource.id}/edit`); // Navigate to edit page
-            }}
-          >
-            Edit Resource
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent click from navigating
-              handleDeleteResource(resource.id); // Call the onDelete function
-            }}
-          >
-            Delete Resource
-          </button>
-        </>
-      )}
+      </div>
     </div>
   );
 }

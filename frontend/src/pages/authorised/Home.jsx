@@ -3,8 +3,8 @@ import api from "../../api";
 import Request from "../../components/Request";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import tokens from "../../constants";
+import "../../styles/Requests.css";
 
-// Constants for request statuses
 const REQUEST_STATUSES = {
   ACCEPTED: "accepted",
   PENDING: "pending",
@@ -12,7 +12,6 @@ const REQUEST_STATUSES = {
   DELIVERED: "delivered",
 };
 
-// Custom hook for fetching requests
 const useFetchRequests = (userRole) => {
   const [requests, setRequests] = useState({
     accepted: [],
@@ -69,13 +68,12 @@ function Home() {
   const deleteRequest = async (requestId) => {
     try {
       await api.delete(`/api/requests/${requestId}/`);
-      fetchRequests(); // Refetch the requests after deletion
+      fetchRequests();
     } catch (error) {
       alert("Failed to delete the request. Please try again.");
     }
   };
 
-  // Toggle visibility of delivered requests
   const toggleDeliveredVisibility = () => {
     setIsDeliveredVisible(!isDeliveredVisible);
   };
@@ -85,61 +83,63 @@ function Home() {
 
   return (
     <div className="home-page">
-      <h1>Home</h1>
+      <h1>Requests Overview</h1>
 
-      {/* Accepted Requests Section */}
       <section>
         <h2>Accepted Requests</h2>
-        {requests.accepted.length > 0 ? (
-          requests.accepted.map((request) => (
-            <Request key={request.id} request={request} />
-          ))
-        ) : (
-          <p>No accepted requests found.</p>
-        )}
+        <div className="request-list">
+          {requests.accepted.length > 0 ? (
+            requests.accepted.map((request) => (
+              <Request key={request.id} request={request} />
+            ))
+          ) : (
+            <p>No accepted requests found.</p>
+          )}
+        </div>
       </section>
 
-      {/* Pending Requests Section */}
       <section>
         <h2>Pending Requests</h2>
-        {requests.pending.length > 0 ? (
-          requests.pending.map((request) => (
-            <Request key={request.id} request={request} />
-          ))
-        ) : (
-          <p>No pending requests found.</p>
-        )}
+        <div className="request-list">
+          {requests.pending.length > 0 ? (
+            requests.pending.map((request) => (
+              <Request key={request.id} request={request} />
+            ))
+          ) : (
+            <p>No pending requests found.</p>
+          )}
+        </div>
       </section>
 
-      {/* Rejected Requests Section */}
       {userRole === "recipient" && (
         <section>
           <h2>Rejected Requests</h2>
-          {requests.rejected.length > 0 ? (
-            requests.rejected.map((request) => (
-              <div key={request.id} className="rejected-request">
-                <Request request={request} />
-                <button onClick={() => deleteRequest(request.id)}>
-                  Delete
-                </button>
-              </div>
-            ))
-          ) : (
-            <p>No rejected requests found.</p>
-          )}
+          <div className="request-list">
+            {requests.rejected.length > 0 ? (
+              requests.rejected.map((request) => (
+                <div key={request.id} className="rejected-request">
+                  <Request request={request} />
+                  <button onClick={() => deleteRequest(request.id)}>
+                    Delete
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p>No rejected requests found.</p>
+            )}
+          </div>
         </section>
       )}
 
-      {/* Delivered Requests Section */}
       <section>
         <h2>
           Delivered Requests{" "}
-          <button onClick={toggleDeliveredVisibility}>
+          <button className="show-hide" onClick={toggleDeliveredVisibility}>
             {isDeliveredVisible ? "Hide" : "Show"}
           </button>
         </h2>
         {isDeliveredVisible && (
-          <div className="delivered-requests-list">
+          <div className="request-list delivered-requests">
             {requests.delivered.length === 0 ? (
               <p>No delivered requests.</p>
             ) : (

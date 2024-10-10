@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import api from "../../../api";
 import LoadingIndicator from "../../../components/LoadingIndicator";
 import MultiSelectDropdown from "../../../components/MultiSelectDropdown";
+import "../../../styles/Resource.css";
 
 function EditResource() {
   const navigate = useNavigate();
@@ -94,39 +95,39 @@ function EditResource() {
   return (
     <div className="edit-resource-page">
       <h1>Edit Resource</h1>
-      <form onSubmit={handleSubmit}>
-        {/* Title Input */}
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleInputChange}
-          placeholder="Enter resource title"
-          required
-        />
-        <br />
+      <div className="resource-creation-form">
+        <form onSubmit={handleSubmit}>
+          {/* Title Input */}
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+            placeholder="Enter resource title"
+            required
+          />
+          <br />
+          {/* Categories Dropdown */}
+          <MultiSelectDropdown
+            items={categories}
+            selectedItems={selectedCategories}
+            onSelectItem={handleCategorySelection}
+            placeholder="Select categories"
+          />
+          <br />
+          {/* Content Input */}
+          <textarea
+            name="content"
+            value={formData.content}
+            onChange={handleInputChange}
+            placeholder="Enter resource content"
+            required
+          ></textarea>
+          <br />
 
-        {/* Content Input */}
-        <textarea
-          name="content"
-          value={formData.content}
-          onChange={handleInputChange}
-          placeholder="Enter resource content"
-          required
-        ></textarea>
-        <br />
-
-        {/* Categories Dropdown */}
-        <MultiSelectDropdown
-          items={categories}
-          selectedItems={selectedCategories}
-          onSelectItem={handleCategorySelection}
-          placeholder="Select categories"
-        />
-        <br />
-
-        <button type="submit">Update Resource</button>
-      </form>
+          <button type="submit">Update Resource</button>
+        </form>
+      </div>
     </div>
   );
 }

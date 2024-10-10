@@ -1,0 +1,158 @@
+.request-item {
+    border: 1px solid black;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    background-color: #FDFAE7;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.request-info {
+    flex: 1;
+}
+
+h3.recipient-name {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+p.listing-name {
+    font-weight: bold;
+}
+
+p.status {
+    margin-top: 0.3rem;
+}
+
+p.status-pending {
+    color: orange;
+}
+
+p.status-accepted {
+    color: green;
+}
+
+p.status-rejected {
+    color: red;
+}
+
+.quantity,
+.additional-notes {
+    margin: 0.2rem 0;
+}
+
+.request-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.request-item button,
+.show-hide {
+    padding: 0.5rem 1rem;
+    margin: 5px 0;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+
+.show-hide {
+    margin-left: 10px;
+}
+
+.details-btn,
+.show-hide {
+    background-color: black;
+    color: #FDFAE7;
+}
+
+.accept-btn {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.reject-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.deliver-btn {
+    background-color: #9b59b6;
+    color: white;
+}
+
+.home-page {
+    padding: 2rem;
+    margin: auto;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+}
+
+.request-list {
+    margin-top: 1rem;
+}
+
+button.delete {
+    background-color: #e74c3c;
+}
+
+button.delete:hover {
+    background-color: #c0392b;
+}
+
+.delivered-requests {
+    margin-top: 1rem;
+}
+
+.rejected-request {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.request-details-container {
+    padding: 2rem;
+    background-color: #6c6c6c;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 2rem auto;
+    color: #FDFAE7;
+}
+
+.request-details-container h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.request-details-container p {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+
+
+.error-message {
+    color: red;
+    font-size: 1.1rem;
+    margin: 1rem 0;
+}
+
+
+.notes-section {
+    background-color: #FDFAE7;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin: 1rem 0;
+    color: black;
+}

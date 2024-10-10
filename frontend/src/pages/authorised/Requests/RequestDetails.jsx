@@ -4,6 +4,7 @@ import api from "../../../api";
 import LoadingIndicator from "../../../components/LoadingIndicator";
 import tokens from "../../../constants";
 import MapView from "../../../components/MapView";
+import "../../../styles/Requests.css";
 
 function RequestDetails() {
   const { requestId } = useParams();
@@ -49,42 +50,61 @@ function RequestDetails() {
   if (error) return <div className="error-message">{error}</div>; // Display error message
 
   return (
-    <div>
+    <div className="request-details-container">
       <h3>Requested by: {request.recipient_name}</h3>
-      <p>Status: {request.status}</p>
+      <p>
+        Status:{" "}
+        <span className={`status ${request.status}`}>
+          {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+        </span>
+      </p>
 
       {/* Accept/Reject buttons for donors if the status is pending */}
       {userRole === "donor" && request.status === "pending" && (
-        <>
-          <button onClick={() => updateRequestStatus("accepted")}>
+        <div className="request-buttons">
+          <button
+            className="accept-btn"
+            onClick={() => updateRequestStatus("accepted")}
+          >
             Accept
           </button>
-          <button onClick={() => updateRequestStatus("rejected")}>
+          <button
+            className="reject-btn"
+            onClick={() => updateRequestStatus("rejected")}
+          >
             Reject
           </button>
-        </>
+        </div>
       )}
 
       {/* Mark as Delivered button for accepted requests, only visible to the donor */}
       {userRole === "donor" && request.status === "accepted" && (
-        <>
-          <button onClick={() => updateRequestStatus("delivered")}>
+        <div className="request-buttons">
+          <button
+            className="deliver-btn"
+            onClick={() => updateRequestStatus("delivered")}
+          >
             Mark as Delivered
           </button>
-        </>
+        </div>
       )}
 
       <p>Listing: {request.listing_name}</p>
       <p>Quantity requested: {request.quantity_requested}</p>
-      <p>{request.additional_notes || "No additional notes"}</p>
+
+      <div className="notes-section">
+        <p>{request.additional_notes || "No additional notes"}</p>
+      </div>
 
       {/* MapView displaying the recipient and listing locations */}
-      <MapView
-        latitude={request.recipient_latitude}
-        longitude={request.recipient_longitude}
-        listingLatitude={request.listing_latitude}
-        listingLongitude={request.listing_longitude}
-      />
+      <div className="map-container">
+        <MapView
+          latitude={request.recipient_latitude}
+          longitude={request.recipient_longitude}
+          listingLatitude={request.listing_latitude}
+          listingLongitude={request.listing_longitude}
+        />
+      </div>
     </div>
   );
 }

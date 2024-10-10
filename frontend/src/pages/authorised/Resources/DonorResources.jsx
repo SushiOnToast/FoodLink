@@ -3,6 +3,7 @@ import api from "../../../api";
 import Resource from "../../../components/Resource";
 import LoadingIndicator from "../../../components/LoadingIndicator";
 import MultiSelectDropdown from "../../../components/MultiSelectDropdown";
+import "../../../styles/Resource.css";
 
 function DonorResources() {
   const [resources, setResources] = useState([]);
@@ -105,43 +106,42 @@ function DonorResources() {
   if (error) return <div className="error-message">{error}</div>; // Display error message
 
   return (
-    <div>
-      <form onSubmit={createResource}>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          required
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
-          placeholder="Enter title of resource"
-        />
-        <br />
-        <textarea
-          name="content"
-          id="content"
-          required
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Type the content of the resource here..."
-        ></textarea>
-        <br />
-        <MultiSelectDropdown
-          items={categories}
-          selectedItems={selectedCategories}
-          onSelectItem={handleCategorySelection}
-          placeholder="Select categories that apply"
-        />
-        <br />
-        <input
-          type="submit"
-          name="post-resource"
-          id="post-resource"
-          value="Post Resource"
-        />
-      </form>
-      <div>
-        <h2>Your Resources</h2>
+    <div className="donor-resources-page">
+      <div className="resource-creation-form">
+        <form onSubmit={createResource}>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            required
+            onChange={(e) => setTitle(e.target.value)}
+            value={title}
+            placeholder="Enter Title"
+          />
+          <MultiSelectDropdown
+            items={categories}
+            selectedItems={selectedCategories}
+            onSelectItem={handleCategorySelection}
+            placeholder="Select Categories"
+          />
+          <textarea
+            name="content"
+            id="content"
+            required
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Start typing!"
+          ></textarea>
+          <input
+            type="submit"
+            name="post-resource"
+            id="post-resource"
+            value="Post!"
+          />
+        </form>
+      </div>
+      <h2>Your Resources</h2>
+      <div className="resource-grid">
         {resources.length > 0 ? (
           resources
             .slice()

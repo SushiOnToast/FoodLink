@@ -1,0 +1,91 @@
+/* Edit Profile Page Container */
+.profile-edit-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FDFAE7; /* Background color similar to ProfileView */
+    height: 100vh;
+    width: 100%;
+  }
+  
+  /* Edit Profile Form */
+  .profile-edit-page form {
+    background-color: #6c6c6c; /* Dark grey background */
+    color: #FDFAE7; /* Light text color */
+    padding: 30px;
+    border-radius: 15px;
+    width: 600px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+  }
+  
+  /* Form Heading */
+  .profile-edit-page h1 {
+    color: black; /* Light color */
+    margin: 20px;
+    margin-top: 30px;
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  /* Form Inputs */
+  .profile-edit-page input[type="text"],
+  .profile-edit-page input[type="email"],
+  .profile-edit-page textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    background-color: #FDFAE7;
+    resize: none;
+  }
+
+  .profile-edit-page input:disabled {
+    background-color: #afafaf;
+  }
+  
+  .profile-edit-page textarea {
+    height: 100px;
+  }
+  
+  /* File Input Styling */
+  .profile-edit-page input[type="file"] {
+    margin: 10px 0;
+    background-color: transparent;
+    color: #FDFAE7;
+  }
+  
+  /* Profile Picture Preview */
+  .profile-edit-page img {
+    display: block;
+    margin: 20px auto;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  }
+  
+  /* Save Changes Button */
+  .profile-edit-page button[type="submit"] {
+    background-color: #000; /* Dark background */
+    color: #FDFAE7; /* Light text */
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    transition-duration: 0.2s;
+    width: 100%;
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+  
+  .profile-edit-page button[type="submit"]:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Adjust map styling to match */
+  .profile-edit-page h2 {
+    margin-top: 30px;
+    color: #FDFAE7;
+  }
+  
+  

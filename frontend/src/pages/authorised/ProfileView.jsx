@@ -4,6 +4,7 @@ import tokens from "../../constants";
 import api from "../../api";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import MapView from "../../components/MapView";
+import "../../styles/ProfileView.css";
 
 // Constants for fallback values
 const DEFAULT_PROFILE_PICTURE = "/media/profile_pictures/default.jpg";
@@ -46,25 +47,37 @@ function ProfileView() {
   return (
     <div className="profile-page">
       <div className="profile-details">
-        <img
-          src={profilePictureUrl}
-          alt="Profile"
-          className="profile-picture"
-          style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-        />
-        <h1 className="name">{user.first_name}</h1>
-        <p className="username">@{username}</p>
-        <p className="role">{user.role}</p>
-        <p className="about">{user.about}</p>
-        <MapView latitude={user.latitude} longitude={user.longitude} />
-        {viewerUsername === username && (
-          <button
-            className="edit-profile"
-            onClick={() => navigate("/profile/edit/")}
-          >
-            Edit Profile
-          </button>
-        )}
+        <div id="basic-details">
+          <img
+            src={profilePictureUrl}
+            alt="Profile"
+            className="profile-picture"
+          />
+          <h1 className="name">{user.first_name}</h1>
+          <p className="username">@{username}</p>
+          <p className="role">{user.role}</p>
+          <br />
+          {viewerUsername === username && (
+            <button
+              className="edit-profile"
+              onClick={() => navigate("/profile/edit/")}
+            >
+              Edit Profile
+            </button>
+          )}
+        </div>
+
+        <div id="longer-details">
+          <div className="about">
+            <h2>About me</h2>
+            <p>{user.about}</p>
+          </div>
+
+          {/* Map container styling */}
+          <div className="map-container">
+            <MapView latitude={user.latitude} longitude={user.longitude} />
+          </div>
+        </div>
       </div>
     </div>
   );
