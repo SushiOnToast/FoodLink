@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../../api";
-import LoadingIndicator from "../../components/LoadingIndicator";
-import MultiSelectDropdown from "../../components/MultiSelectDropdown";
+import api from "../../../api";
+import LoadingIndicator from "../../../components/LoadingIndicator";
+import MultiSelectDropdown from "../../../components/MultiSelectDropdown";
 
 function EditListing() {
   const navigate = useNavigate();
-  const { listingId } = useParams(); // Get listing ID from the URL
+  const { listingId } = useParams(); // Get the listing ID from the URL
   const [loading, setLoading] = useState(true);
-  const [foodTypes, setFoodTypes] = useState([]);
-  const [selectedFoodTypes, setSelectedFoodTypes] = useState([]);
+  const [foodTypes, setFoodTypes] = useState([]); // List of all food types for selection
+  const [selectedFoodTypes, setSelectedFoodTypes] = useState([]); // Selected food types by user
   const [formData, setFormData] = useState({
     name: "",
     quantity: 0,
     special_notes: "",
     cover_image: null, // For new image upload
-    cover_image_preview: null, // For displaying the current image preview
+    cover_image_preview: null, // To display the current image preview
   });
 
   // Fetch existing food types and the specific listing data when the component mounts
@@ -28,10 +28,10 @@ function EditListing() {
   const fetchFoodTypes = async () => {
     try {
       const response = await api.get("/api/listings/food_types/");
-      setFoodTypes(response.data);
+      setFoodTypes(response.data); // Set the fetched food types to state
     } catch (error) {
       console.error("Error fetching food types:", error);
-      alert("Failed to load food types.");
+      alert("Failed to load food types. Please try again later."); // User-friendly error message
     }
   };
 
@@ -50,7 +50,7 @@ function EditListing() {
       setSelectedFoodTypes(listing.food_types.map((food) => food.id)); // Set the selected food types
     } catch (error) {
       console.error("Error fetching listing:", error);
-      alert("Failed to load listing data.");
+      alert("Failed to load listing data. Please try again later."); // User-friendly error message
     } finally {
       setLoading(false);
     }
@@ -101,20 +101,21 @@ function EditListing() {
 
       await api.put(`/api/listings/${listingId}/edit/`, formDataToSubmit, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data", // Specify the content type for file upload
         },
       });
 
       alert("Listing updated successfully!");
-      navigate(`/listings/${listingId}`);
+      navigate(`/listings/${listingId}`); // Redirect to the listing detail page
     } catch (error) {
       console.error("Error updating listing:", error);
-      alert("Failed to update listing.");
+      alert("Failed to update listing. Please check your input and try again."); // User-friendly error message
     } finally {
       setLoading(false);
     }
   };
 
+  // Show loading indicator while fetching data
   if (loading) return <LoadingIndicator />;
 
   return (

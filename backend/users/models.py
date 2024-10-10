@@ -3,17 +3,27 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    ROLE_CHOICES = [
-        ("donor", "Donor"),
-        ("recipient", "Recipient"),
-    ]
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="recipient")
-    about = models.CharField(max_length=1000, null=True) # for donors
+    """
+    Custom User model that extends the default Django AbstractUser.
+    Includes additional fields for user role, location, and profile information.
+    """
 
-    # latitude and longitude
+    ROLE_CHOICES = [
+        ("donor", "Donor"),  # User can be a donor
+        ("recipient", "Recipient"),  # User can be a recipient
+    ]
+
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="recipient")
+    about = models.CharField(max_length=1000, null=True)  # Description for donors
+
+    # Geographic coordinates for user location
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
 
-    profile_picture = models.ImageField(upload_to="profile_pictures/", null=True, blank=True, default="profile_pictures/default.png")
-    
-
+    # Profile picture with a default image
+    profile_picture = models.ImageField(
+        upload_to="profile_pictures/",
+        null=True,
+        blank=True,
+        default="profile_pictures/default.png",
+    )

@@ -1,10 +1,13 @@
 from rest_framework import serializers
-from .models import *
+from .models import Request
 from listings.models import Listing
 from users.models import User
 
 
-class RequestSerilialiser(serializers.ModelSerializer):
+class RequestSerializer(serializers.ModelSerializer):
+    """Serializer for handling requests related to food listings."""
+
+    # Read-only fields to get related data from the listing and recipient
     listing_name = serializers.CharField(source="listing.name", read_only=True)
     recipient_name = serializers.CharField(source="recipient.username", read_only=True)
     listing_latitude = serializers.FloatField(
@@ -32,10 +35,11 @@ class RequestSerilialiser(serializers.ModelSerializer):
             "listing_longitude",
             "recipient_latitude",
             "recipient_longitude",
-            "status"
+            "status",
         ]
 
     def validate_quantity_requested(self, value):
+        """Validate that the quantity requested is greater than zero."""
         if value <= 0:
             raise serializers.ValidationError(
                 "Quantity requested must be greater than zero."

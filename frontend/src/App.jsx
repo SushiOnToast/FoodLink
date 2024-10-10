@@ -13,15 +13,21 @@ import LandingPage from "./pages/LandingPage";
 import Home from "./pages/authorised/Home";
 import ProfileView from "./pages/authorised/ProfileView";
 import EditProfile from "./pages/authorised/EditProfile";
-import EditListing from "./pages/authorised/EditListing";
-import EditResource from "./pages/authorised/EditResource";
-import Listings from "./pages/authorised/Listings";
-import Resources from "./pages/authorised/Resources";
-import DonorListings from "./pages/authorised/DonorListings";
-import DonorResources from "./pages/authorised/DonorResources";
-import ListingDetails from "./pages/authorised/ListingDetails";
-import RequestDetails from "./pages/authorised/RequestDetails";
-import ResourceDetails from "./pages/authorised/ResourceDetails";
+
+// listing related
+import EditListing from "./pages/authorised/Listings/EditListing";
+import Listings from "./pages/authorised/Listings/Listings";
+import ListingDetails from "./pages/authorised/Listings/ListingDetails";
+import DonorListings from "./pages/authorised/Listings/DonorListings";
+
+// Request related
+import RequestDetails from "./pages/authorised/Requests/RequestDetails";
+
+// resource related
+import EditResource from "./pages/authorised/Resources/EditResource";
+import Resources from "./pages/authorised/Resources/Resources";
+import DonorResources from "./pages/authorised/Resources/DonorResources";
+import ResourceDetails from "./pages/authorised/Resources/ResourceDetails";
 
 function Logout() {
   localStorage.clear();

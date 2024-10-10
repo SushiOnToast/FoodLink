@@ -7,10 +7,15 @@ import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 // Use the Vite environment variable for the Mapbox token
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
-function MapSelector({ setLatitude, setLongitude, initialLatitude, initialLongitude }) {
+function MapSelector({
+  setLatitude,
+  setLongitude,
+  initialLatitude,
+  initialLongitude,
+}) {
   const mapContainer = useRef(null); // Reference to the map container DOM element
-  const mapInstance = useRef(null);  // Store the map instance to prevent re-initialization
-  const markerRef = useRef(null);    // Store a reference to the marker
+  const mapInstance = useRef(null); // Store the map instance to prevent re-initialization
+  const markerRef = useRef(null); // Store a reference to the marker
 
   useEffect(() => {
     // Ensure the map is only initialized once
@@ -24,7 +29,7 @@ function MapSelector({ setLatitude, setLongitude, initialLatitude, initialLongit
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v11",
       center: [lng, lat],
-      zoom: 12,
+      zoom: initialLatitude && initialLongitude ? 12 : 2, // Zoom out if no initial coordinates
     });
 
     mapInstance.current = map; // Store the map instance
@@ -43,19 +48,21 @@ function MapSelector({ setLatitude, setLongitude, initialLatitude, initialLongit
     // Handle the geocoder result event to update the marker position
     geocoder.on("result", (e) => {
       const { lng, lat } = e.result.center;
-      updateMarkerAndFlyTo(map, lat, lng); // Fly the map and update the marker
+      updateMarkerAndFlyTo(map, lat, lng, 14); // Fly the map and update the marker
     });
 
     // Add a marker if initial latitude and longitude are provided
     if (lat && lng) {
-      const initialMarker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+      const initialMarker = new mapboxgl.Marker()
+        .setLngLat([lng, lat])
+        .addTo(map);
       markerRef.current = initialMarker; // Store the marker reference
     }
 
     // Update marker position on map click
     map.on("click", (e) => {
       const { lng, lat } = e.lngLat;
-      updateMarkerAndFlyTo(map, lat, lng);
+      updateMarkerAndFlyTo(map, lat, lng, 14); // Fly and update with zoom 14
     });
 
     // Cleanup map instance on component unmount
@@ -68,7 +75,7 @@ function MapSelector({ setLatitude, setLongitude, initialLatitude, initialLongit
   }, []); // Empty dependency array to run this effect only once
 
   // Function to update the marker position and fly the map
-  const updateMarkerAndFlyTo = (map, lat, lng) => {
+  const updateMarkerAndFlyTo = (map, lat, lng, zoom = 12) => {
     if (!isNaN(lat) && !isNaN(lng)) {
       setLatitude(lat); // Update latitude in parent component
       setLongitude(lng); // Update longitude in parent component
@@ -82,9 +89,10 @@ function MapSelector({ setLatitude, setLongitude, initialLatitude, initialLongit
       const newMarker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
       markerRef.current = newMarker; // Update marker reference
 
-      // Fly the map to the new coordinates smoothly
+      // Fly the map to the new coordinates smoothly with adjustable zoom
       map.flyTo({
         center: [lng, lat],
+        zoom: zoom, // Set zoom level
         essential: true, // Ensures the animation is considered essential
       });
     }

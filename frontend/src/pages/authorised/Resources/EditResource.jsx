@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../../api";
-import LoadingIndicator from "../../components/LoadingIndicator";
-import MultiSelectDropdown from "../../components/MultiSelectDropdown";
+import api from "../../../api";
+import LoadingIndicator from "../../../components/LoadingIndicator";
+import MultiSelectDropdown from "../../../components/MultiSelectDropdown";
 
 function EditResource() {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ function EditResource() {
     title: "",
     content: "",
   });
+  const [error, setError] = useState(null); // State for error handling
 
   // Fetch existing categories and the specific resource data when the component mounts
   useEffect(() => {
@@ -28,7 +29,7 @@ function EditResource() {
       setCategories(response.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
-      alert("Failed to load categories.");
+      setError("Failed to load categories. Please try again.");
     }
   };
 
@@ -45,7 +46,7 @@ function EditResource() {
       setSelectedCategories(resource.categories.map((category) => category.id)); // Set the selected categories
     } catch (error) {
       console.error("Error fetching resource:", error);
-      alert("Failed to load resource data.");
+      setError("Failed to load resource data. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -77,18 +78,18 @@ function EditResource() {
       };
 
       await api.put(`/api/resources/${resourceId}/edit/`, formDataToSubmit);
-
       alert("Resource updated successfully!");
       navigate(`/resources/${resourceId}`);
     } catch (error) {
       console.error("Error updating resource:", error);
-      alert("Failed to update resource.");
+      alert("Failed to update resource. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   if (loading) return <LoadingIndicator />;
+  if (error) return <div className="error-message">{error}</div>; // Display error message
 
   return (
     <div className="edit-resource-page">

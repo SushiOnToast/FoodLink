@@ -1,9 +1,14 @@
 from rest_framework import serializers
-from .models import *
+from .models import User  # Import the User model
 
 
-# serialiser that will be used for registration view
-class RegisterSerialiser(serializers.ModelSerializer):
+# Serializer for user registration
+class RegisterSerializer(serializers.ModelSerializer):
+    """
+    Serializer used for user registration.
+    It includes fields for creating a new user and handles password hashing.
+    """
+
     class Meta:
         model = User
         fields = [
@@ -17,24 +22,31 @@ class RegisterSerialiser(serializers.ModelSerializer):
         ]
         extra_kwargs = {
             "password": {
-                "write_only": True,
+                "write_only": True,  # Password should not be read in responses
             },
         }
 
     def create(self, validated_data):
+        """
+        Create a new user instance with a hashed password.
+        """
         password = validated_data.pop("password", None)
         user = User(**validated_data)
 
         if password:
-            user.set_password(password)  # hashes the password
+            user.set_password(password)  # Hashes the password
 
         user.save()
 
         return user
 
 
-# serialiser that will be used for profile viewing
-class UserSerialiser(serializers.ModelSerializer):
+# Serializer for viewing user profile
+class UserSerializer(serializers.ModelSerializer):
+    """
+    Serializer used for retrieving user profile information.
+    """
+
     class Meta:
         model = User
         fields = [
@@ -45,12 +57,17 @@ class UserSerialiser(serializers.ModelSerializer):
             "role",
             "about",
             "latitude",
-            "longitude", 
-            "profile_picture",     
+            "longitude",
+            "profile_picture",
         ]
 
-# for editing
-class UpdateProfileSerialiser(serializers.ModelSerializer):
+
+# Serializer for updating user profile
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    """
+    Serializer used for updating user profile information.
+    """
+
     class Meta:
         model = User
         fields = [

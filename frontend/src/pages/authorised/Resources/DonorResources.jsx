@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import api from "../../api";
-import Resource from "../../components/Resource"; 
-import LoadingIndicator from "../../components/LoadingIndicator";
-import MultiSelectDropdown from "../../components/MultiSelectDropdown";
+import api from "../../../api";
+import Resource from "../../../components/Resource";
+import LoadingIndicator from "../../../components/LoadingIndicator";
+import MultiSelectDropdown from "../../../components/MultiSelectDropdown";
 
 function DonorResources() {
   const [resources, setResources] = useState([]);
@@ -11,6 +11,7 @@ function DonorResources() {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [error, setError] = useState(null); // State for error handling
 
   useEffect(() => {
     fetchCategories();
@@ -23,8 +24,8 @@ function DonorResources() {
       const response = await api.get("/api/resources/categories/"); // Adjust the API endpoint for categories
       setCategories(response.data);
     } catch (error) {
-      alert(error);
-      console.log(error);
+      console.error("Error fetching categories:", error);
+      setError("Failed to fetch categories. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -36,8 +37,8 @@ function DonorResources() {
       const response = await api.get("/api/resources/"); // Adjust the API endpoint for resources
       setResources(response.data);
     } catch (error) {
-      console.error("error fetching resources", error);
-      alert(error);
+      console.error("Error fetching resources:", error);
+      setError("Failed to fetch resources. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -55,17 +56,20 @@ function DonorResources() {
 
       const response = await api.post("/api/resources/create/", resourceData);
       if (response.status === 201) {
-        alert("Resource created");
+        alert("Resource created successfully.");
         setTitle("");
         setContent("");
         setSelectedCategories([]);
         fetchResources();
       } else {
-        alert("failed to create resource");
+        alert("Failed to create resource. Please try again.");
       }
     } catch (error) {
-      alert(error.response?.data?.detail || "Failed to create resource");
-      console.log(error.response?.data || error);
+      console.error("Error creating resource:", error);
+      alert(
+        error.response?.data?.detail ||
+          "Failed to create resource. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -76,14 +80,14 @@ function DonorResources() {
     try {
       const response = await api.delete(`/api/resources/${id}/delete/`); // Adjust the API endpoint for deletion
       if (response.status === 204) {
-        alert("Resource deleted");
+        alert("Resource deleted successfully.");
         fetchResources(); // Fetch resources again to refresh the list
       } else {
-        alert("failed to delete resource");
+        alert("Failed to delete resource. Please try again.");
       }
     } catch (error) {
-      alert(error);
-      console.log(error);
+      console.error("Error deleting resource:", error);
+      alert("Failed to delete resource. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -98,10 +102,11 @@ function DonorResources() {
   };
 
   if (loading) return <LoadingIndicator />;
+  if (error) return <div className="error-message">{error}</div>; // Display error message
 
   return (
     <div>
-      <form onSubmit={(e) => createResource(e)}>
+      <form onSubmit={createResource}>
         <input
           type="text"
           id="title"
@@ -117,9 +122,7 @@ function DonorResources() {
           id="content"
           required
           value={content}
-          onChange={(e) => {
-            setContent(e.target.value);
-          }}
+          onChange={(e) => setContent(e.target.value)}
           placeholder="Type the content of the resource here..."
         ></textarea>
         <br />
@@ -145,7 +148,7 @@ function DonorResources() {
             .reverse()
             .map((resource) => (
               <Resource
-                key={resource.id} 
+                key={resource.id}
                 resource={resource}
                 onDelete={deleteResource}
               />

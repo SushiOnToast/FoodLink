@@ -5,33 +5,43 @@ import api from "../../api";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import MapView from "../../components/MapView";
 
-function ProfileView() {
-  const { username } = useParams();
+// Constants for fallback values
+const DEFAULT_PROFILE_PICTURE = "/media/profile_pictures/default.jpg";
+
+const useFetchUserData = (username) => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
-  const viewerUsername = localStorage.getItem(tokens.USERNAME);
-  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+
+  const fetchUserData = async () => {
+    setLoading(true);
+    try {
+      const response = await api.get(`/api/users/profile/${username}/`);
+      setUser(response.data);
+    } catch (error) {
+      setError("Failed to fetch user data.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      setLoading(true);
-      try {
-        const response = await api.get(`/api/users/profile/${username}/`);
-        setUser(response.data);
-      } catch (error) {
-        alert("Failed to fetch user data.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUserData();
   }, [username]);
 
-  const profilePictureUrl =
-    user.profile_picture || "/media/profile_pictures/default.jpg"; // Fallback to default
+  return { user, loading, error };
+};
+
+function ProfileView() {
+  const { username } = useParams();
+  const viewerUsername = localStorage.getItem(tokens.USERNAME);
+  const navigate = useNavigate();
+  const { user, loading, error } = useFetchUserData(username);
+
+  const profilePictureUrl = user.profile_picture || DEFAULT_PROFILE_PICTURE; // Fallback to default
 
   if (loading) return <LoadingIndicator />;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="profile-page">

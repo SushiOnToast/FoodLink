@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import api from "../../api";
-import LoadingIndicator from "../../components/LoadingIndicator";
-import tokens from "../../constants";
-import MapView from "../../components/MapView";
+import api from "../../../api";
+import LoadingIndicator from "../../../components/LoadingIndicator";
+import tokens from "../../../constants";
+import MapView from "../../../components/MapView";
 
 function RequestDetails() {
   const { requestId } = useParams();
   const [request, setRequest] = useState(null);
   const [loading, setLoading] = useState(true);
-  const username = localStorage.getItem(tokens.USERNAME);
-  const userRole = localStorage.getItem(tokens.USER_ROLE);
+  const [error, setError] = useState(null); // State for error handling
+  const userRole = localStorage.getItem(tokens.USER_ROLE); // Get the user role
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,11 +19,11 @@ function RequestDetails() {
 
   const fetchRequest = async () => {
     try {
-      const response = await api.get(`/api/requests/${requestId}`);
+      const response = await api.get(`/api/requests/${requestId}/`);
       setRequest(response.data);
     } catch (error) {
-      console.log(error);
-      alert(error);
+      console.error("Error fetching request details:", error);
+      setError("Failed to fetch request details. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -36,36 +36,47 @@ function RequestDetails() {
         status: newStatus,
       });
       setRequest(response.data);
-      alert(`Request ${newStatus} successfully`);
+      alert(`Request ${newStatus} successfully.`);
     } catch (error) {
-      console.log(error);
-      alert(`Failed to ${newStatus} request`);
+      console.error(`Error updating request status to ${newStatus}:`, error);
+      alert(`Failed to ${newStatus} request. Please try again.`);
     } finally {
       setLoading(false);
     }
   };
 
   if (loading) return <LoadingIndicator />;
+  if (error) return <div className="error-message">{error}</div>; // Display error message
 
   return (
     <div>
       <h3>Requested by: {request.recipient_name}</h3>
       <p>Status: {request.status}</p>
 
+      {/* Accept/Reject buttons for donors if the status is pending */}
       {userRole === "donor" && request.status === "pending" && (
         <>
-          <button onClick={() => updateRequestStatus("accepted")}>Accept</button>
-          <button onClick={() => updateRequestStatus("rejected")}>Reject</button>
+          <button onClick={() => updateRequestStatus("accepted")}>
+            Accept
+          </button>
+          <button onClick={() => updateRequestStatus("rejected")}>
+            Reject
+          </button>
+        </>
+      )}
+
+      {/* Mark as Delivered button for accepted requests, only visible to the donor */}
+      {userRole === "donor" && request.status === "accepted" && (
+        <>
+          <button onClick={() => updateRequestStatus("delivered")}>
+            Mark as Delivered
+          </button>
         </>
       )}
 
       <p>Listing: {request.listing_name}</p>
       <p>Quantity requested: {request.quantity_requested}</p>
-      <p>
-        {request.additional_notes
-          ? request.additional_notes
-          : "No additional notes"}
-      </p>
+      <p>{request.additional_notes || "No additional notes"}</p>
 
       {/* MapView displaying the recipient and listing locations */}
       <MapView
