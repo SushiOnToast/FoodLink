@@ -13,6 +13,7 @@ import LandingPage from "./pages/LandingPage";
 import Home from "./pages/authorised/Home";
 import ProfileView from "./pages/authorised/ProfileView";
 import EditProfile from "./pages/authorised/EditProfile";
+import EditListing from "./pages/authorised/EditListing";
 import Listings from "./pages/authorised/Listings";
 import DonorListings from "./pages/authorised/DonorListings";
 import ListingDetails from "./pages/authorised/ListingDetails";
@@ -73,6 +74,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ListingDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/listings/:listingId/edit"
+            element={
+              <ProtectedRoute>
+                <EditListing />
               </ProtectedRoute>
             }
           />

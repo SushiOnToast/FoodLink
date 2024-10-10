@@ -11,6 +11,7 @@ urlpatterns = [
     path("delete/<int:pk>/", DeleteListingView.as_view(), name="delete_listing"),
     path("<int:pk>/", ListingDetailView.as_view(), name="listing_details"),
     path("requests/", DonorListingWithRequestView.as_view(), name="requests"),
+    path("<int:pk>/edit/", UpdateListingView.as_view(), name="edit_listing"),
 ]
 
 if settings.DEBUG:

@@ -49,7 +49,7 @@ class UserSerialiser(serializers.ModelSerializer):
             "profile_picture",     
         ]
 
-
+# for editing
 class UpdateProfileSerialiser(serializers.ModelSerializer):
     class Meta:
         model = User

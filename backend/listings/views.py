@@ -45,6 +45,15 @@ class DeleteListingView(generics.DestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return Listing.objects.filter(donor=user)
+    
+
+class UpdateListingView(generics.UpdateAPIView):
+    serializer_class = UpdateListingSerialiser
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Listing.objects.filter(donor=user)
 
 
 class FoodTypeView(generics.ListAPIView):

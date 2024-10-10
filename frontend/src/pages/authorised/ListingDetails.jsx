@@ -8,10 +8,11 @@ import MapView from "../../components/MapView"; // Import the MapView component
 
 function ListingDetails() {
   const { listingId } = useParams();
-  const [listing, setListing] = useState(null);
+  const [listing, setListing] = useState(null); // Initially null
   const [loading, setLoading] = useState(true);
   const userRole = localStorage.getItem(tokens.USER_ROLE);
   const navigate = useNavigate();
+  const viewerUsername = localStorage.getItem(tokens.USERNAME);
 
   // Get user latitude and longitude from localStorage
   const userLatitude = parseFloat(localStorage.getItem(tokens.USER_LATITUDE));
@@ -25,7 +26,6 @@ function ListingDetails() {
     try {
       const response = await api.get(`/api/listings/${listingId}`);
       setListing(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error);
       alert(error);
@@ -38,7 +38,23 @@ function ListingDetails() {
     navigate(`../listings`);
   };
 
+  const handleDeleteListing = async (listingId) => {
+    try {
+      await api.delete(`/api/listings/delete/${listingId}/`);
+      navigate(`../listings`);
+    } catch (error) {
+      console.error(
+        "Error deleting listing:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
   if (loading) return <LoadingIndicator />;
+
+  if (!listing) return <div>No listing found.</div>;
+
+  const isOwner = listing.donor_username === viewerUsername;
 
   return (
     <div>
@@ -61,6 +77,27 @@ function ListingDetails() {
             <p key={food_type.id}>{food_type.name}</p>
           ))}
         </div>
+      )}
+
+      {isOwner && (
+        <>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/listings/${listing.id}/edit`);
+            }}
+          >
+            Edit Listing
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent click from navigating to the listing details
+              handleDeleteListing(listing.id); // Call the onDelete function
+            }}
+          >
+            Delete listing
+          </button>
+        </>
       )}
 
       {userRole === "recipient" && listing.quantity !== 0 && (

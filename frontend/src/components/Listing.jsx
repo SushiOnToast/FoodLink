@@ -3,8 +3,9 @@ import tokens from "../constants";
 import { useNavigate } from "react-router-dom";
 
 function Listing({ listing, onDelete }) {
-  const formattedDate = new Date(listing.created_at).toLocaleDateString("en-US");
-  const userRole = localStorage.getItem(tokens.USER_ROLE);
+  const formattedDate = new Date(listing.created_at).toLocaleDateString(
+    "en-US"
+  );
   const viewerUsername = localStorage.getItem(tokens.USERNAME);
   const isOwner = listing.donor_username === viewerUsername;
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ function Listing({ listing, onDelete }) {
     <div onClick={handleClick}>
       {listing.cover_image && (
         <img
-          src={`${baseUrl}${listing.cover_image}`}  // Display cover image
+          src={`${baseUrl}${listing.cover_image}`} // Display cover image
           alt={listing.name}
           style={{ width: "100px", height: "100px", objectFit: "cover" }}
         />
@@ -49,16 +50,28 @@ function Listing({ listing, onDelete }) {
           {listing.donor_username}
         </a>
       </p>
-      <p>{listing.special_notes ? listing.special_notes : "No special notes"}</p>
+      <p>
+        {listing.special_notes ? listing.special_notes : "No special notes"}
+      </p>
       {isOwner && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation(); // Prevent click from navigating to the listing details
-            onDelete(listing.id); // Call the onDelete function
-          }}
-        >
-          Delete listing
-        </button>
+        <>
+          <button
+            onClick={(e) => {
+              e.stopPropagation(); 
+              navigate(`/listings/${listing.id}/edit`)
+            }}
+          >
+            Edit Listing
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent click from navigating to the listing details
+              onDelete(listing.id); // Call the onDelete function
+            }}
+          >
+            Delete listing
+          </button>
+        </>
       )}
     </div>
   );
