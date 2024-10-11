@@ -27,9 +27,9 @@ To build a supportive community focused on sharing, compassion, and sustainabili
 
 ## 🔗 Quick Links
 - [Contributing Guidelines](CONTRIBUTING.md)  
-- [Run Locally Instructions](RUN_LOCALLY.md)
+- [Local Setup Instructions](RUN_LOCALLY.md)
 - [User Documentation](https://adorable-rook-1b6.notion.site/Foodlink-User-Documentation-11c89fe1340080a8933cf368e6a8bf02)
-- [Replit](https://replit.com/@sushbomm/FoodLink?v=1)
+- [Replit Link](https://replit.com/@sushbomm/FoodLink?v=1)
 - [Devpost project](https://devpost.com/software/foodlink-7p6xym)
 - [Figma Prototype](https://www.figma.com/proto/ZQxd67WIsR2CTx7SgZFexv/Foodlink-main?page-id=0%3A1&node-id=0-25&node-type=canvas&viewport=335%2C399%2C0.03&t=wAVQS0nWIcbysccO-1&scaling=scale-down-width&content-scaling=fixed&starting-point-node-id=0%3A25)
 
