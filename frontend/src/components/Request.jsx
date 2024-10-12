@@ -52,9 +52,6 @@ function Request({ request }) {
 
         {request.status === "pending" && userRole === "donor" && (
           <>
-            {loading ? (
-              <LoadingIndicator />
-            ) : (
               <div className="status-buttons">
                 <button
                   className="accept-btn"
@@ -69,22 +66,18 @@ function Request({ request }) {
                   Reject
                 </button>
               </div>
-            )}
+            
           </>
         )}
 
         {request.status === "accepted" && userRole === "donor" && (
           <>
-            {loading ? (
-              <LoadingIndicator />
-            ) : (
               <button
                 className="deliver-btn"
                 onClick={() => updateRequestStatus("delivered")}
               >
                 Mark as Delivered
               </button>
-            )}
           </>
         )}
       </div>

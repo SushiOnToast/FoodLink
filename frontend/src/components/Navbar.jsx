@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import tokens from "../constants";
 import "../styles/Navbar.css";
+import icon from "../../favicon.png";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -10,7 +11,9 @@ function Navbar() {
   return (
     <div className="nav-container">
       <nav className="navbar-home">
-        <div className="foodLink">FoodLink</div>
+        <div className="foodLink" onClick={() => navigate("/")}>
+          <img src={icon} alt="foodlink icon" />
+          <p>FoodLink</p></div>
         <div className="nav-links">
           <NavLink to="/" className="nav-link">
             Home

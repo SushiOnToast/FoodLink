@@ -61,7 +61,7 @@ function RequestDetails() {
 
       {/* Accept/Reject buttons for donors if the status is pending */}
       {userRole === "donor" && request.status === "pending" && (
-        <div className="request-buttons">
+        <div className="status-buttons">
           <button
             className="accept-btn"
             onClick={() => updateRequestStatus("accepted")}
@@ -79,7 +79,7 @@ function RequestDetails() {
 
       {/* Mark as Delivered button for accepted requests, only visible to the donor */}
       {userRole === "donor" && request.status === "accepted" && (
-        <div className="request-buttons">
+        <div className="status-buttons">
           <button
             className="deliver-btn"
             onClick={() => updateRequestStatus("delivered")}

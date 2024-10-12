@@ -6,6 +6,7 @@ import LoadingIndicator from "./LoadingIndicator";
 import MapSelector from "./MapSelector";
 import { jwtDecode } from "jwt-decode";
 import "../styles/Form.css";
+import icon from "./../../favicon.png";
 
 // Default fallback coordinates (Hyderabad) if geolocation is unavailable
 const DEFAULT_LATITUDE = 17.385044;
@@ -98,8 +99,6 @@ function Form({ route, method }) {
         // Store username, user role, and location in localStorage
         localStorage.setItem(tokens.USERNAME, username);
         localStorage.setItem(tokens.USER_ROLE, userRole);
-        localStorage.setItem(tokens.USER_LATITUDE, latitude.toString());
-        localStorage.setItem(tokens.USER_LONGITUDE, longitude.toString());
 
         navigate("/"); // Navigate to homepage after login
       } else {
@@ -144,6 +143,10 @@ function Form({ route, method }) {
 
   return (
     <div className="login-register-page">
+      <div className="foodLink" onClick={() => navigate("/landing")}>
+        <img src={icon} alt="foodlink icon" />
+        <p>FoodLink</p>
+      </div>
       <h1 className="form-title">{type}</h1>
       <p className="or">or</p>
       <button

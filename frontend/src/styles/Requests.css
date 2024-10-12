@@ -1,3 +1,43 @@
+.home-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.welcome h1 {
+    font-size: 2.5rem;
+    margin: 0px;
+}
+
+.actions {
+    padding: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+.request-section {
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #6c6c6c;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.request-section section {
+    width: 100%;
+}
+
+
 .request-item {
     border: 1px solid black;
     padding: 1rem;
@@ -7,6 +47,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    width: 100%;
 }
 
 .request-info {
@@ -16,6 +57,11 @@
 h3.recipient-name {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
+}
+
+.status-buttons {
+    display: flex;
+    gap: 5px;
 }
 
 p.listing-name {
@@ -50,7 +96,9 @@ p.status-rejected {
 }
 
 .request-item button,
-.show-hide {
+.show-hide,
+.delete-request,
+.actions button {
     padding: 0.5rem 1rem;
     margin: 5px 0;
     border: none;
@@ -64,7 +112,9 @@ p.status-rejected {
 }
 
 .details-btn,
-.show-hide {
+.show-hide,
+.delete-request,
+.actions button {
     background-color: black;
     color: #FDFAE7;
 }
@@ -119,15 +169,23 @@ button.delete:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+}
+
+.rejected-request .delete-request {
+    position: absolute;
+    right: 20px;
+    bottom: 30px;
+
 }
 
 .request-details-container {
-    padding: 2rem;
+    padding: 40px;
     background-color: #6c6c6c;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 800px;
-    margin: 2rem auto;
+    margin: 40px auto;
     color: #FDFAE7;
 }
 
@@ -155,4 +213,13 @@ button.delete:hover {
     border-radius: 4px;
     margin: 1rem 0;
     color: black;
+}
+
+.request-details-container button {
+    padding: 0.5rem 1rem;
+    margin: 5px 0;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition-duration: 0.2s;
 }
