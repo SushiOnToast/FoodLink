@@ -1,0 +1,45 @@
+.landing-page {
+    padding: 60px;
+    display: flex;
+    text-align: center;
+    flex-direction: column;   
+}
+
+.title-container {
+    display: flex;
+    justify-content: center;
+}
+
+.foodlink-landing {
+    font-size: 2.6rem;
+    margin: 5px;
+}
+
+.slogan {
+    border: 2px solid black;
+    width: fit-content;
+    padding: 2px 13px;
+    border-radius: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.landing-buttons {
+    margin: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.auth-options {
+    background-color: black;
+    color: #FDFAE7;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 16px;
+    transition-duration: 0.2s;
+}
+
+a:hover {
+    text-decoration: underline;
+}

@@ -146,7 +146,7 @@ Create a `.env` file in the `frontend` directory with the following content:
 
 ```env
 VITE_API_URL=http://127.0.0.1:8000/
-VITE_IMG_BASE_URL="http://127.0.0.1:8000"
+VITE_IMG_BASE_URL=http://127.0.0.1:8000
 VITE_MAPBOX_ACCESS_TOKEN=your_mapbox_access_token
 ```
 

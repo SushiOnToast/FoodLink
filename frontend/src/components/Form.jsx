@@ -5,6 +5,7 @@ import tokens from "../constants";
 import LoadingIndicator from "./LoadingIndicator";
 import MapSelector from "./MapSelector";
 import { jwtDecode } from "jwt-decode";
+import "../styles/Form.css";
 
 // Default fallback coordinates (Hyderabad) if geolocation is unavailable
 const DEFAULT_LATITUDE = 17.385044;
@@ -35,7 +36,7 @@ function Form({ route, method }) {
             setLongitude(userLng); // Set user's longitude
           },
           () => {
-            // Fallback to default coordinates if permission is denied
+            // Fallback to default coordinates if permission is denied or any error occurs
             setLatitude(DEFAULT_LATITUDE);
             setLongitude(DEFAULT_LONGITUDE);
           }
@@ -176,7 +177,6 @@ function Form({ route, method }) {
                 Donor
               </label>
             </div>
-            <br />
             {/* Name field for registration */}
             <input
               className="form-input"
@@ -188,7 +188,6 @@ function Form({ route, method }) {
             />
           </>
         )}
-        <br />
         {/* Username field for both login and registration */}
         <input
           className="form-input"
@@ -198,7 +197,6 @@ function Form({ route, method }) {
           placeholder="Username"
           required
         />
-        <br />
         {type === "Register" && (
           <>
             {/* Email field for registration */}
@@ -210,21 +208,18 @@ function Form({ route, method }) {
               placeholder="Email"
               required
             />
-            <br />
-            <br />
             <h2>Select Location</h2>
             {/* Map selector for choosing user's location */}
-            <MapSelector
-              setLatitude={setLatitude}
-              setLongitude={setLongitude}
-              initialLatitude={latitude} // Pass initial latitude
-              initialLongitude={longitude} // Pass initial longitude
-            />
-            <br />
-            <br />
+            <div className="map-container">
+              <MapSelector
+                setLatitude={setLatitude}
+                setLongitude={setLongitude}
+                initialLatitude={latitude} // Pass initial latitude
+                initialLongitude={longitude} // Pass initial longitude
+              />
+            </div>
           </>
         )}
-        <br />
         {/* Password fields */}
         <input
           className="form-input password"
@@ -236,7 +231,6 @@ function Form({ route, method }) {
         />
         {type === "Register" && (
           <>
-            <br />
             {/* Confirm password for registration */}
             <input
               className="form-input password"
@@ -248,7 +242,6 @@ function Form({ route, method }) {
             />
           </>
         )}
-        <br />
         {/* Submit button */}
         <button className="form-button" type="submit" disabled={loading}>
           {type}
