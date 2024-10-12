@@ -11,3 +11,7 @@ python-dotenv
 django-filter
 requests
 Pillow
+dj-database-url
+whitenoise
+storages
+boto3
