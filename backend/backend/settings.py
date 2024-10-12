@@ -17,7 +17,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
 # Allowed hosts for the application
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
 
 # Django REST Framework settings
 REST_FRAMEWORK = {
@@ -91,22 +91,21 @@ TEMPLATES = [
 WSGI_APPLICATION = "backend.wsgi.application"
 
 # Database configuration
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",  # Using SQLite for development
-        "NAME": BASE_DIR / "db.sqlite3",
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",  # Using SQLite for development
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
-
-# Use PostgreSQL in production
-if not DEBUG:  # When DEBUG is False
-    DATABASES["default"] = dj_database_url.config(
-        default=os.getenv(
-            "DATABASE_PUBLIC_URL"
-        ),  # Database URL from the environment variable
-        conn_max_age=600,
-        # ssl_require=True  # Important for production environments
-    )
+else:
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=os.getenv("DATABASE_PUBLIC_URL"),  # Database URL from the environment variable
+            conn_max_age=600,
+            ssl_require=True  # Important for production environments
+        )
+    }
 
 # Custom user model
 AUTH_USER_MODEL = "users.User"
@@ -150,15 +149,16 @@ if not DEBUG:
     AWS_S3_FILE_OVERWRITE = False
 
     STORAGES = {
-
         # Media file (image) management   
         "default": {
-            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage", 
+            "BUCKET_NAME": AWS_STORAGE_BUCKET_NAME,
         },
         
         # CSS and JS file management
         "staticfiles": {
-            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",  
+            "BUCKET_NAME": AWS_STORAGE_BUCKET_NAME,
         },
     }
 
