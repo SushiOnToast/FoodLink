@@ -13,5 +13,5 @@ requests
 Pillow
 dj-database-url
 whitenoise
-storages
+django-storages
 boto3
