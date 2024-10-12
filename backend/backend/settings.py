@@ -2,6 +2,7 @@ from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
 import os
+import dj_database_url
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -50,11 +51,13 @@ INSTALLED_APPS = [
     "requests",
     "resources",
     "corsheaders",  # Cross-Origin Resource Sharing headers
+    "storages",
 ]
 
 # Middleware configuration
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",  # Enable CORS
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # For serving static files in production
     "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -91,9 +94,19 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",  # Using SQLite for development
-        "NAME": BASE_DIR / "db.sqlite3",  # Database file location
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# Use PostgreSQL in production
+if not DEBUG:  # When DEBUG is False
+    DATABASES["default"] = dj_database_url.config(
+        default=os.getenv(
+            "DATABASE_PUBLIC_URL"
+        ),  # Database URL from the environment variable
+        conn_max_age=600,
+        # ssl_require=True  # Important for production environments
+    )
 
 # Custom user model
 AUTH_USER_MODEL = "users.User"
@@ -122,10 +135,32 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images) URL configuration
 STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Media files configuration for user uploads
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+if not DEBUG:
+    # Production settings
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
+    AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME
+    AWS_S3_FILE_OVERWRITE = False
+
+    STORAGES = {
+
+        # Media file (image) management   
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        },
+        
+        # CSS and JS file management
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        },
+    }
 
 # Default auto field for primary keys
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
