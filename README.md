@@ -29,7 +29,7 @@ To build a supportive community focused on sharing, compassion, and sustainabili
 - [Contributing Guidelines](CONTRIBUTING.md)  
 - [Local Setup Instructions](RUN_LOCALLY.md)
 - [User Documentation](https://adorable-rook-1b6.notion.site/Foodlink-User-Documentation-11c89fe1340080a8933cf368e6a8bf02)
-- [Live Demo](https://food-link-tr86m33it-sushaenis-projects.vercel.app)
+- [Live Demo](https://food-link-44cfn6s8s-sushaenis-projects.vercel.app)
 - [Devpost project](https://devpost.com/software/foodlink-7p6xym)
 - [Figma Prototype](https://www.figma.com/proto/ZQxd67WIsR2CTx7SgZFexv/Foodlink-main?page-id=0%3A1&node-id=0-25&node-type=canvas&viewport=335%2C399%2C0.03&t=wAVQS0nWIcbysccO-1&scaling=scale-down-width&content-scaling=fixed&starting-point-node-id=0%3A25)
 
@@ -71,6 +71,7 @@ Using **Mapbox**, users can:
 - **API Integration**: Used **Axios** for smooth communication between the frontend and backend.
 - **Prototyping**: Designed and refined the platform using **Figma**, allowing us to visualise and gather feedback early on.
 - **Mapping**: Implemented **Mapbox** to allow location-based search for listings and donors.
+- **Deployment**: The frontend was deployed on vercel whilst the backend was deployed on railway along with the postgresql database, media files such as profile pictures were stored on an AWS s3 storage bucket
 
 ---
 
@@ -78,6 +79,7 @@ Using **Mapbox**, users can:
 - **API Integration**: Establishing a seamless connection between React and Django while ensuring proper data handling.
 - **Mapbox Initialisation**: Addressing issues with the proper display of locations and user interactions on the map.
 - **Stylistic Features**: Adding cover images and other design elements to improve the aesthetic appeal and usability of the platform.
+- **Deployment**: deploymen of the project was certainly a challenge, but we managed to overcome it wih enough time and effort.
 
 ---
 
@@ -100,6 +102,17 @@ Using **Mapbox**, users can:
   <img src="https://github.com/devicons/devicon/blob/master/icons/git/git-original-wordmark.svg" title="Git" alt="Git" width="40" height="40"/>&nbsp;
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" title="Figma" alt="Figma" width="40" height="40" />&nbsp;
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/notion/notion-original.svg" title="Notion" alt="Notion" width="40" height="40" />&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" title="Postgresql" alt="Postgresql" width="40" height="40" />&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/djangorest/djangorest-original.svg" title="Django rest framework" alt="Django rest framework" width="40" height="40" />&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" title="Amazon Web services" alt="Amazon web services" width="40" height="40" />&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" title="Vercel" alt="Vercel" width="40" height="40" />&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/railway/railway-original.svg" title="Railway" alt="Railway" width="40" height="40" />&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg" title="Sqlite" alt="sqlite" width="40" height="40"/>&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/axios/axios-plain.svg" title="axios" alt="axios" width="40" height="40"/>&nbsp;
+          
+          
+          
+          
 </div>
 
 ---
