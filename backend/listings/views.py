@@ -21,6 +21,16 @@ class CreateListingView(generics.ListCreateAPIView):
         # Save the listing with the authenticated user as the donor
         serializer.save(donor=self.request.user)
 
+class UserListingsView(generics.ListAPIView):
+    """View to retrieve listings of a specific user based on their username."""
+
+    serializer_class = ListingSerialiser
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        return Listing.objects.filter(donor__username=username)
+
 
 class AllListingView(generics.ListAPIView):
     """View for retrieving all listings, optionally filtered by food types."""

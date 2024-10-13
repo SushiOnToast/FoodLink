@@ -2,8 +2,8 @@
 .profile-page {
     padding-top: 50px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
     height: 100%;
     width: 100%;
     background-color: #fdf6e3;
@@ -20,6 +20,7 @@
     width: 50%;
     color: #FDFAE7;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    align-self: center;
     /* Subtle shadow */
 
 }
@@ -103,3 +104,17 @@
     width: 100%;
     height: 300px;
 }
+
+.profile-listings {
+    padding: 50px;
+    margin-top: 30px;
+}
+
+
+.map-container button {
+    border: none;
+    padding: 5px;
+    border-radius: 20px;
+    transition-duration: 0.2s;
+}
+

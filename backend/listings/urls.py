@@ -20,6 +20,8 @@ urlpatterns = [
     path("requests/", DonorListingWithRequestView.as_view(), name="requests"),
     # Route for editing a specific listing by primary key (pk)
     path("<int:pk>/edit/", UpdateListingView.as_view(), name="edit_listing"),
+    # Route for displaying that user's listings on their profile
+    path("<str:username>/", UserListingsView.as_view(), name="user_listings"),
 ]
 
 # Serve media files during development
