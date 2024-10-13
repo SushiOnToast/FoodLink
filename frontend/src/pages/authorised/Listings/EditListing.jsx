@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import api from "../../../api";
 import LoadingIndicator from "../../../components/LoadingIndicator";
 import MultiSelectDropdown from "../../../components/MultiSelectDropdown";
+import "../../../styles/DonorListings.css";
 
 function EditListing() {
   const navigate = useNavigate();
@@ -120,61 +121,64 @@ function EditListing() {
 
   return (
     <div className="edit-listing-page">
-      <h1>Edit Listing</h1>
-      <form onSubmit={handleSubmit}>
-        {/* Name Input */}
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          placeholder="Enter name of food"
-          required
-        />
-        <br />
-
-        {/* Quantity Input */}
-        <input
-          type="number"
-          name="quantity"
-          value={formData.quantity}
-          onChange={handleInputChange}
-          min="1"
-          required
-        />
-        <br />
-
-        {/* Special Notes */}
-        <textarea
-          name="special_notes"
-          value={formData.special_notes}
-          onChange={handleInputChange}
-          placeholder="Any specific information (e.g., allergies, nutrition info)"
-        ></textarea>
-        <br />
-
-        {/* Food Types Dropdown */}
-        <MultiSelectDropdown
-          items={foodTypes}
-          selectedItems={selectedFoodTypes}
-          onSelectItem={handleFoodTypeSelection}
-          placeholder="Select food types"
-        />
-        <br />
-
-        {/* Cover Image Upload and Preview */}
-        <h3>Cover Image</h3>
-        {formData.cover_image_preview && (
-          <img
-            src={formData.cover_image_preview}
-            alt="Cover Preview"
-            style={{ width: "150px", height: "150px", objectFit: "cover" }}
+      <h1 className="edit-listing">Edit Listing</h1>
+      <form onSubmit={handleSubmit} className="create-listing-form">
+        <div className="form-image-preview">
+          <div className="image-preview">
+            {formData.cover_image_preview && (
+              <img
+                src={formData.cover_image_preview}
+                alt="Cover Preview"
+              />
+            )}
+          </div>
+          <label className="upload-btn">
+            <input type="file" accept="image/*" onChange={handleFileChange} />
+            <span>Upload image</span>
+          </label>
+        </div>
+        <div className="form-fields">
+          {/* Name Input */}
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            placeholder="Enter name of food"
+            required
+            className="input-field"
           />
-        )}
-        <input type="file" accept="image/*" onChange={handleFileChange} />
-        <br />
+          <div className="inline-fields">
+            {/* Food Types Dropdown */}
+            <MultiSelectDropdown
+              items={foodTypes}
+              selectedItems={selectedFoodTypes}
+              onSelectItem={handleFoodTypeSelection}
+              placeholder="Select food types"
+              className="input-field"
+            />
+            {/* Quantity Input */}
+            <input
+              type="number"
+              name="quantity"
+              value={formData.quantity}
+              onChange={handleInputChange}
+              min="1"
+              required
+              className="input-field"
+            />
+          </div>
 
-        <button type="submit">Update Listing</button>
+          {/* Special Notes */}
+          <textarea
+            name="special_notes"
+            value={formData.special_notes}
+            onChange={handleInputChange}
+            placeholder="Any specific information (e.g., allergies, nutrition info)"
+            className="textarea-field"
+          ></textarea>
+          <button type="submit" className="post-btn">Update Listing</button>
+        </div>
       </form>
     </div>
   );

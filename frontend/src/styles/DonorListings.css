@@ -116,3 +116,8 @@
 .donor-listings-container h2 {
     color: black;
 }
+
+.edit-listing {
+    margin: 20px 35px;
+    text-align: center;
+}
